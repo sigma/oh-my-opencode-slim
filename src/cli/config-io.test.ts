@@ -1,6 +1,6 @@
 /// <reference types="bun-types" />
 
-import { describe, expect, test, afterEach, beforeEach, mock } from "bun:test"
+import { describe, expect, test, afterEach, beforeEach, mock, spyOn } from "bun:test"
 import {
   stripJsonComments,
   parseConfigFile,
@@ -115,16 +115,16 @@ describe("config-io", () => {
     const configPath = join(tmpDir, "opencode", "opencode.json")
     paths.ensureConfigDir()
     writeFileSync(configPath, JSON.stringify({}))
-    
-    mock.module("./system", () => ({
-      fetchLatestVersion: async () => "1.2.3"
-    }))
+
+    const mockFetch = spyOn(system, "fetchLatestVersion").mockResolvedValue("1.2.3")
 
     const result = await addAuthPlugins({ hasAntigravity: true, hasOpenAI: false, hasOpencodeZen: false, hasTmux: false })
     expect(result.success).toBe(true)
-    
+
     const saved = JSON.parse(readFileSync(configPath, "utf-8"))
     expect(saved.plugin).toContain("opencode-antigravity-auth@1.2.3")
+
+    mockFetch.mockRestore()
   })
 
   test("addProviderConfig adds google provider config", () => {

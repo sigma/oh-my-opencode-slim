@@ -1,6 +1,6 @@
 /// <reference types="bun-types" />
 
-import { describe, expect, test, mock, spyOn } from "bun:test"
+import { describe, expect, test, spyOn } from "bun:test"
 import { isOpenCodeInstalled, isTmuxInstalled, getOpenCodeVersion, fetchLatestVersion } from "./system"
 
 describe("system", () => {
@@ -17,37 +17,26 @@ describe("system", () => {
   })
 
   test("fetchLatestVersion returns version string or null", async () => {
-    // Mock global fetch
-    const originalFetch = globalThis.fetch
-    globalThis.fetch = mock(async () => {
-      return {
-        ok: true,
-        json: async () => ({ version: "1.2.3" })
-      }
-    }) as any
+    const mockFetch = spyOn(globalThis, "fetch").mockImplementation(async () => ({
+      ok: true,
+      json: async () => ({ version: "1.2.3" })
+    }) as any)
 
-    try {
-      const version = await fetchLatestVersion("any-package")
-      expect(version).toBe("1.2.3")
-    } finally {
-      globalThis.fetch = originalFetch
-    }
+    const version = await fetchLatestVersion("any-package")
+    expect(version).toBe("1.2.3")
+
+    mockFetch.mockRestore()
   })
 
   test("fetchLatestVersion returns null on error", async () => {
-    const originalFetch = globalThis.fetch
-    try {
-      globalThis.fetch = mock(async () => {
-        return {
-          ok: false
-        }
-      }) as any
+    const mockFetch = spyOn(globalThis, "fetch").mockImplementation(async () => ({
+      ok: false
+    }) as any)
 
-      const version = await fetchLatestVersion("any-package")
-      expect(version).toBeNull()
-    } finally {
-      globalThis.fetch = originalFetch
-    }
+    const version = await fetchLatestVersion("any-package")
+    expect(version).toBeNull()
+
+    mockFetch.mockRestore()
   })
 
   test("getOpenCodeVersion returns string or null", async () => {
