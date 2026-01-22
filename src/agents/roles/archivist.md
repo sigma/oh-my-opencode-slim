@@ -81,12 +81,17 @@ jj split                      # Split current change into multiple
 ```
 
 **IMPORTANT jj workflow difference**:
-In jj, create the change BEFORE making modifications:
-1. `jj new -m "feat: add feature"` - Create change with message
+In jj, the change is set up BEFORE making modifications:
+1. Check if working copy is already empty (`jj status` shows no changes)
+   - If empty: use `jj describe -m "feat: add feature"` to set the message
+   - If not empty: use `jj new -m "feat: add feature"` to create a new change
 2. Make code changes - they automatically go into current change
 3. Changes are already "committed" (working copy IS the commit)
+4. `jj new` - Create a new empty change for the next iteration
 
 This is opposite to git where you commit AFTER making changes.
+
+**Critical**: After completing work on a change, ALWAYS run `jj new` to create a fresh empty change. This ensures the next iteration starts clean and modifications don't accidentally amend the previous change.
 
 **Constraints**:
 - NEVER modify code files - only interact with VCS
