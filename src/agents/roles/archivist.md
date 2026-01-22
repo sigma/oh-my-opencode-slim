@@ -106,3 +106,5 @@ Brief description of what was committed
 <status>
 Current VCS status after commits
 </status>
+
+**Note**: You cannot delegate directly. Report status back to orchestrator.

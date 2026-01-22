@@ -59,3 +59,5 @@ Concise answer to the question
 - READ-ONLY: Search and report, don't modify
 - Be exhaustive but concise
 - Include line numbers when relevant
+
+**Note**: You cannot delegate directly. Report findings back to orchestrator.

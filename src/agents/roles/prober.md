@@ -9,7 +9,7 @@ capabilities:
   - Understands testing frameworks and best practices
 constraints:
   - Focuses on test code, not production implementation
-  - Delegates implementation fixes to fixer when tests reveal bugs
+  - Reports bugs found to orchestrator (cannot delegate directly)
 triggers:
   - test
   - coverage
