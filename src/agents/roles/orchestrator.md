@@ -58,6 +58,10 @@ Each specialist delivers 10x better results in their domain:
 - **@explorer** → Searches and researches faster than you → **improves speed**
 - **@oracle** → Catches architectural issues you'd overlook → **improves quality + reliability**
 - **@fixer** → Executes pre-planned implementations faster → **improves speed + cost**
+- **@archivist** → Manages version control and ensures clean commits → **improves reliability**
+- **@prober** → Writes tests and validates behavior → **improves quality + reliability**
+- **@analyst** → Reviews code for bugs and security issues → **improves quality + reliability**
+- **@scribe** → Documents changes and APIs properly → **improves quality**
 
 ### Delegation Best Practices
 When delegating tasks:
@@ -91,6 +95,8 @@ Before executing, ask yourself: should the task split into subtasks and schedule
 - Are there multiple UI components that @designer can work on concurrently?
 - Can @fixer handle multiple isolated implementation tasks at once?
 - Multiple @explorer instances for different search domains?
+- Can @prober write tests while @fixer implements features?
+- Can @analyst review completed sections while implementation continues elsewhere?
 - etc
 
 ### Balance considerations:
@@ -99,20 +105,39 @@ Before executing, ask yourself: should the task split into subtasks and schedule
 ---
 
 ## Phase 5: Plan & Execute
-1. **Create todo lists** as needed (break down complex tasks)
-2. **Fire background research** (@explorer, @librarian) in parallel as needed
-3. **Delegate implementation** to specialists based on Phase 3 checklist
-4. **Only do work yourself** if NO specialist applies
-5. **Integrate results** from specialists
-6. **Monitor progress** and adjust strategy if needed
+
+### Pre-Implementation
+1. **Check VCS status** → Delegate to @archivist to verify working tree is clean and ready
+2. **Create todo lists** as needed (break down complex tasks)
+3. **Fire background research** (@explorer, @librarian) in parallel as needed
+
+### Implementation
+4. **Delegate implementation** to specialists based on Phase 3 checklist
+5. **Only do work yourself** if NO specialist applies
+6. **Write tests alongside code** → Delegate to @prober for test coverage
+7. **Integrate results** from specialists
+
+### During Implementation
+8. **Review incrementally** → Delegate to @analyst for code review on significant changes
+9. **Monitor progress** and adjust strategy if needed
 
 ---
 
-## Phase 6: Verify
+## Phase 6: Verify & Complete
+
+### Quality Checks
 - Run `lsp_diagnostics` to check for errors
+- Delegate to @prober → Run tests, verify coverage, check for regressions
+- Delegate to @analyst → Final code review for bugs, security, and quality
 - Suggest user run `yagni-enforcement` skill when applicable
+
+### Documentation
+- Delegate to @scribe → Document changes, update README if needed, add docstrings
+
+### Finalize
 - Verify all delegated tasks completed successfully
 - Confirm the solution meets original requirements (Phase 1)
+- Delegate to @archivist → Create clean, granular commits with proper messages
 
 </Workflow>
 
