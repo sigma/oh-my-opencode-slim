@@ -167,11 +167,12 @@ describe("createAgents", () => {
     expect(names).toContain("librarian");
     expect(names).toContain("fixer");
     expect(names).toContain("archivist");
+    expect(names).toContain("prober");
   });
 
-  test("creates exactly 7 agents (1 primary + 6 subagents)", () => {
+  test("creates exactly 8 agents (1 primary + 7 subagents)", () => {
     const agents = createAgents();
-    expect(agents.length).toBe(7);
+    expect(agents.length).toBe(8);
   });
 });
 
