@@ -1,28 +1,19 @@
-// Agent names
-export const SUBAGENT_NAMES = [
-    "explorer",
-    "librarian",
-    "oracle",
-    "designer",
-    "fixer",
-] as const;
+import { AGENT_REGISTRY, SUBAGENT_NAMES as REGISTRY_SUBAGENT_NAMES } from "../agents/registry";
+
+// Re-export agent names from registry (single source of truth)
+export const SUBAGENT_NAMES = REGISTRY_SUBAGENT_NAMES;
 
 export const ORCHESTRATOR_NAME = "orchestrator" as const;
 
 export const ALL_AGENT_NAMES = [ORCHESTRATOR_NAME, ...SUBAGENT_NAMES] as const;
 
-// Agent name type (for use in DEFAULT_MODELS)
-export type AgentName = typeof ALL_AGENT_NAMES[number];
+// Agent name type
+export type AgentName = (typeof ALL_AGENT_NAMES)[number];
 
-// Default models for each agent
-export const DEFAULT_MODELS: Record<AgentName, string> = {
-    orchestrator: "google/claude-opus-4-5-thinking",
-    oracle: "openai/gpt-5.2-codex",
-    librarian: "google/gemini-3-flash",
-    explorer: "google/gemini-3-flash",
-    designer: "google/gemini-3-flash",
-    fixer: "google/gemini-3-flash",
-};
+// Default models derived from registry (for backward compatibility)
+export const DEFAULT_MODELS: Record<AgentName, string> = Object.fromEntries(
+  ALL_AGENT_NAMES.map((name) => [name, AGENT_REGISTRY[name].defaultModel])
+) as Record<AgentName, string>;
 
 // Polling configuration
 export const POLL_INTERVAL_MS = 500;
