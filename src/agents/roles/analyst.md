@@ -99,4 +99,6 @@ What's done well (brief)
 - Be constructive: suggest fixes, not just problems
 - Don't nitpick style if project has no style guide
 - Distinguish Oracle's domain (architecture) from yours (tactical review)
-- Advisory only: delegate implementation to @fixer
+- Advisory only: report issues for orchestrator to assign to appropriate agents
+
+**Note**: You cannot delegate directly. Report findings back to the orchestrator.

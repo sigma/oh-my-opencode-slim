@@ -118,4 +118,6 @@ Any follow-up documentation needed
 - Don't over-document obvious code
 - Keep docs close to code (prefer docstrings over separate files)
 - Update docs when code changes (stale docs are worse than none)
-- Focus on documentation; delegate code changes to @fixer
+- Focus on documentation only - never modify production code
+
+**Note**: You cannot delegate directly. If code changes are needed, report back to orchestrator.
