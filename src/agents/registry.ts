@@ -20,6 +20,7 @@ import fixerRole from "./roles/fixer.md" with { type: "text" };
 import archivistRole from "./roles/archivist.md" with { type: "text" };
 import proberRole from "./roles/prober.md" with { type: "text" };
 import analystRole from "./roles/analyst.md" with { type: "text" };
+import scribeRole from "./roles/scribe.md" with { type: "text" };
 
 /** Re-export types for convenience */
 export type { AgentFrontMatter as AgentMetadata, ParsedRole };
@@ -48,6 +49,7 @@ const ROLE_FILES: Record<string, string> = {
   archivist: archivistRole,
   prober: proberRole,
   analyst: analystRole,
+  scribe: scribeRole,
 };
 
 /** Cache of parsed roles */
