@@ -102,4 +102,24 @@ describe("providers", () => {
     expect(agents.orchestrator.skills).toContain("*")
     expect(agents.fixer.skills).toBeDefined()
   })
+
+  test("generateLiteConfig includes all 10 agents", () => {
+    const config = generateLiteConfig({
+      hasAntigravity: true,
+      hasOpenAI: false,
+      hasOpencodeZen: false,
+      hasTmux: false,
+    })
+
+    const agents = (config.presets as any).antigravity
+    const expectedAgents = [
+      "orchestrator", "oracle", "librarian", "explorer", "designer", "fixer",
+      "archivist", "prober", "analyst", "scribe"
+    ]
+    
+    for (const agent of expectedAgents) {
+      expect(agents[agent]).toBeDefined()
+      expect(agents[agent].model).toBeDefined()
+    }
+  })
 })

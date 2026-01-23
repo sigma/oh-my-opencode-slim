@@ -15,6 +15,10 @@ export const DEFAULT_AGENT_SKILLS: Record<AgentName, string[]> = {
   librarian: [],
   explorer: [],
   fixer: [],
+  archivist: [],
+  prober: [],
+  analyst: [],
+  scribe: [],
 };
 
 const YAGNI_TEMPLATE = `# YAGNI Enforcement Skill

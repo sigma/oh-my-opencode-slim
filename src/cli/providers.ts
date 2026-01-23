@@ -46,6 +46,10 @@ export const MODEL_MAPPINGS = {
     explorer: { model: "google/gemini-3-flash", variant: "low" },
     designer: { model: "google/gemini-3-flash", variant: "medium" },
     fixer: { model: "google/gemini-3-flash", variant: "low" },
+    archivist: { model: "google/gemini-3-flash", variant: "low" },
+    prober: { model: "google/gemini-3-flash", variant: "low" },
+    analyst: { model: "google/gemini-3-flash", variant: "medium" },
+    scribe: { model: "google/gemini-3-flash", variant: "low" },
   },
   openai: {
     orchestrator: { model: "openai/gpt-5.2-codex" },
@@ -54,6 +58,10 @@ export const MODEL_MAPPINGS = {
     explorer: { model: "openai/gpt-5.1-codex-mini", variant: "low" },
     designer: { model: "openai/gpt-5.1-codex-mini", variant: "medium" },
     fixer: { model: "openai/gpt-5.1-codex-mini", variant: "low" },
+    archivist: { model: "openai/gpt-5.1-codex-mini", variant: "low" },
+    prober: { model: "openai/gpt-5.1-codex-mini", variant: "low" },
+    analyst: { model: "openai/gpt-5.1-codex-mini", variant: "medium" },
+    scribe: { model: "openai/gpt-5.1-codex-mini", variant: "low" },
   },
   "zen-free": {
     orchestrator: { model: "opencode/glm-4.7-free" },
@@ -62,6 +70,10 @@ export const MODEL_MAPPINGS = {
     explorer: { model: "opencode/grok-code", variant: "low" },
     designer: { model: "opencode/grok-code", variant: "medium" },
     fixer: { model: "opencode/grok-code", variant: "low" },
+    archivist: { model: "opencode/grok-code", variant: "low" },
+    prober: { model: "opencode/grok-code", variant: "low" },
+    analyst: { model: "opencode/grok-code", variant: "medium" },
+    scribe: { model: "opencode/grok-code", variant: "low" },
   },
 } as const;
 
