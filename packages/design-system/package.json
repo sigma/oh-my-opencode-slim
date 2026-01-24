@@ -1,0 +1,16 @@
+{
+  "name": "@firefly-swarm/design-system",
+  "version": "0.1.0",
+  "description": "Foundational UI tokens and components for Pantheon agents",
+  "main": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.3.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5"
+  }
+}

@@ -107,5 +107,30 @@ describe("E2E: install and load", () => {
     // playwright is a skill, not a direct tool key
     // But it should be in the description of omos_skill
     expect(tools.omos_skill.description).toContain("playwright");
-  });
+
+    // 4. Live ping check
+    const result = Bun.spawnSync(["opencode", "run", "ping all agents"], {
+      env: {
+        ...process.env,
+        XDG_CONFIG_HOME: tempDir,
+      },
+    });
+
+    const stdout = result.stdout.toString();
+    const stderr = result.stderr.toString();
+    
+    if (result.exitCode !== 0) {
+      if (stderr.includes("not found") || stderr.includes("ENOENT")) {
+        console.warn("opencode binary not found, skipping live check");
+      } else {
+        console.error("opencode run failed with exit code:", result.exitCode);
+        console.error("stdout:", stdout);
+        console.error("stderr:", stderr);
+        expect(result.exitCode).toBe(0);
+      }
+    } else {
+      expect(result.exitCode).toBe(0);
+      expect(stdout).toMatch(/Pong|orchestrator|agent|responsive|status/i);
+    }
+  }, 120000);
 });

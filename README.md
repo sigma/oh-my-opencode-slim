@@ -618,16 +618,16 @@ The installer generates presets for different provider combinations. Switch betw
       "scribe": { "model": "openai/gpt-5.1-codex-mini", "variant": "low", "skills": [] }
     },
     "zen-free": {
-      "orchestrator": { "model": "opencode/glm-4.7-free", "skills": ["*"] },
-      "oracle": { "model": "opencode/glm-4.7-free", "variant": "high", "skills": [] },
-      "librarian": { "model": "opencode/grok-code", "variant": "low", "skills": [] },
-      "explorer": { "model": "opencode/grok-code", "variant": "low", "skills": [] },
-      "designer": { "model": "opencode/grok-code", "variant": "medium", "skills": ["playwright"] },
-      "fixer": { "model": "opencode/grok-code", "variant": "low", "skills": [] },
-      "archivist": { "model": "opencode/grok-code", "variant": "low", "skills": [] },
-      "prober": { "model": "opencode/grok-code", "variant": "low", "skills": [] },
-      "analyst": { "model": "opencode/grok-code", "variant": "low", "skills": [] },
-      "scribe": { "model": "opencode/grok-code", "variant": "low", "skills": [] }
+      "orchestrator": { "model": "opencode/big-pickle", "skills": ["*"] },
+      "oracle": { "model": "opencode/big-pickle", "variant": "high", "skills": [] },
+      "librarian": { "model": "opencode/big-pickle", "variant": "low", "skills": [] },
+      "explorer": { "model": "opencode/big-pickle", "variant": "low", "skills": [] },
+      "designer": { "model": "opencode/big-pickle", "variant": "medium", "skills": ["playwright"] },
+      "fixer": { "model": "opencode/big-pickle", "variant": "low", "skills": [] },
+      "archivist": { "model": "opencode/big-pickle", "variant": "low", "skills": [] },
+      "prober": { "model": "opencode/big-pickle", "variant": "low", "skills": [] },
+      "analyst": { "model": "opencode/big-pickle", "variant": "low", "skills": [] },
+      "scribe": { "model": "opencode/big-pickle", "variant": "low", "skills": [] }
     },
     "antigravity-openai": {
       "orchestrator": { "model": "google/claude-opus-4-5-thinking", "skills": ["*"] },
@@ -657,7 +657,7 @@ The installer generates presets for different provider combinations. Switch betw
 |--------|-------------|
 | `antigravity` | Google models (Claude Opus + Gemini Flash) |
 | `openai` | OpenAI models (GPT-5.2 + GPT-5.1-mini) |
-| `zen-free` | Free models (GLM-4.7 + Grok Code) |
+| `zen-free` | Free models (Big Pickle) |
 | `antigravity-openai` | Mixed: Antigravity for most agents, OpenAI for Oracle |
 
 #### Author's Preset
@@ -722,6 +722,21 @@ The environment variable takes precedence over the `preset` field in the config 
    rm -f ~/.config/opencode/oh-my-opencode-slim.json
    rm -f .opencode/oh-my-opencode-slim.json
    ```
+
+---
+
+## 🤝 Community & Contributing
+
+Contributions are welcome! Whether it's reporting a bug, suggesting a feature, or submitting a pull request, your help is appreciated.
+
+- **[Contributing Guide](CONTRIBUTING.md)**: Learn how to set up the project and submit changes.
+- **[Code of Conduct](CODE_OF_CONDUCT.md)**: Our commitment to a welcoming environment.
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
