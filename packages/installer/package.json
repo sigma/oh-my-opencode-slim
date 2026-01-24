@@ -1,0 +1,28 @@
+{
+  "name": "@firefly-swarm/installer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "opencode-swarm": "./src/index.ts"
+  },
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "bun build ./src/index.ts --outdir ./dist --format esm"
+  },
+  "dependencies": {
+    "@firefly-swarm/network-compiler": "workspace:*",
+    "@firefly-swarm/shared": "workspace:*",
+    "@firefly-swarm/tool-skills": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

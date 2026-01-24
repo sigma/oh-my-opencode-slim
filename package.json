@@ -2,12 +2,13 @@
   "name": "oh-my-opencode-slim",
   "version": "0.5.3",
   "description": "Lightweight agent orchestration plugin for OpenCode - a slimmed-down fork of oh-my-opencode",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "oh-my-opencode-slim": "./dist/cli/index.js"
-  },
+  "main": "packages/core/src/index.ts",
+  "bin": "packages/installer/src/index.ts",
   "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "license": "MIT",
   "keywords": [
     "opencode",
@@ -34,17 +35,28 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target bun --format esm && bun build src/cli/index.ts --outdir dist/cli --target bun --format esm && tsc --emitDeclarationOnly",
-    "typecheck": "tsc --noEmit",
+    "build": "bun run --filter '*' build",
     "test": "bun test",
-    "dev": "bun run build && opencode",
-    "prepublishOnly": "bun run build"
+    "typecheck": "bun run --filter '*' typecheck",
+    "dev": "bun run --filter @firefly-swarm/core dev"
   },
   "dependencies": {
-    "@ast-grep/cli": "^0.40.0",
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@opencode-ai/plugin": "^1.1.19",
     "@opencode-ai/sdk": "^1.1.19",
+    "@firefly-swarm/agents": "workspace:*",
+    "@firefly-swarm/core": "workspace:*",
+    "@firefly-swarm/hooks": "workspace:*",
+    "@firefly-swarm/installer": "workspace:*",
+    "@firefly-swarm/mcp-integrations": "workspace:*",
+    "@firefly-swarm/multiplexer": "workspace:*",
+    "@firefly-swarm/network-compiler": "workspace:*",
+    "@firefly-swarm/shared": "workspace:*",
+    "@firefly-swarm/tool-ast-grep": "workspace:*",
+    "@firefly-swarm/tool-background": "workspace:*",
+    "@firefly-swarm/tool-grep": "workspace:*",
+    "@firefly-swarm/tool-quota": "workspace:*",
+    "@firefly-swarm/tool-skills": "workspace:*",
     "vscode-jsonrpc": "^8.2.0",
     "vscode-languageserver-protocol": "^3.17.5",
     "zod": "^4.1.8"

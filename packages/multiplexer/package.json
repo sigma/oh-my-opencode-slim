@@ -1,0 +1,27 @@
+{
+  "name": "@firefly-swarm/multiplexer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "bun build ./src/index.ts --outdir ./dist --format esm"
+  },
+  "dependencies": {
+    "@firefly-swarm/shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.1.19",
+    "typescript": "^5.8.3"
+  }
+}

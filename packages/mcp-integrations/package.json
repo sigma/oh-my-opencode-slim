@@ -1,0 +1,20 @@
+{
+  "name": "@firefly-swarm/mcp-integrations",
+  "version": "0.5.3",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "^1.1.19"
+  },
+  "dependencies": {
+    "@firefly-swarm/shared": "workspace:*"
+  }
+}

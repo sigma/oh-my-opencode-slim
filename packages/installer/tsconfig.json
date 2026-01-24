@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@firefly-swarm/shared": ["../shared/src/index.ts"],
+      "@firefly-swarm/network-compiler": ["../network-compiler/src/index.ts"],
+      "@firefly-swarm/tool-skills": ["../tool-skills/src/index.ts"]
+    },
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["bun-types"],
+    "declaration": true,
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"]
+}

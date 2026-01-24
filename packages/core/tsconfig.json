@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@firefly-swarm/shared": ["../shared/src/index.ts"],
+      "@firefly-swarm/agents": ["../agents/src/index.ts"],
+      "@firefly-swarm/hooks": ["../hooks/src/index.ts"],
+      "@firefly-swarm/mcp-integrations": ["../mcp-integrations/src/index.ts"],
+      "@firefly-swarm/multiplexer": ["../multiplexer/src/index.ts"],
+      "@firefly-swarm/tool-ast-grep": ["../tool-ast-grep/src/index.ts"],
+      "@firefly-swarm/tool-background": ["../tool-background/src/index.ts"],
+      "@firefly-swarm/tool-grep": ["../tool-grep/src/index.ts"],
+      "@firefly-swarm/tool-lsp": ["../tool-lsp/src/index.ts"],
+      "@firefly-swarm/tool-quota": ["../tool-quota/src/index.ts"],
+      "@firefly-swarm/tool-skills": ["../tool-skills/src/index.ts"]
+    },
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["bun-types"],
+    "declaration": true,
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*", "../agents/roles/roles.d.ts"]
+}

@@ -5,7 +5,19 @@
     "": {
       "name": "oh-my-opencode-slim",
       "dependencies": {
-        "@ast-grep/cli": "^0.40.0",
+        "@firefly-swarm/agents": "workspace:*",
+        "@firefly-swarm/core": "workspace:*",
+        "@firefly-swarm/hooks": "workspace:*",
+        "@firefly-swarm/installer": "workspace:*",
+        "@firefly-swarm/mcp-integrations": "workspace:*",
+        "@firefly-swarm/multiplexer": "workspace:*",
+        "@firefly-swarm/network-compiler": "workspace:*",
+        "@firefly-swarm/shared": "workspace:*",
+        "@firefly-swarm/tool-ast-grep": "workspace:*",
+        "@firefly-swarm/tool-background": "workspace:*",
+        "@firefly-swarm/tool-grep": "workspace:*",
+        "@firefly-swarm/tool-quota": "workspace:*",
+        "@firefly-swarm/tool-skills": "workspace:*",
         "@modelcontextprotocol/sdk": "^1.25.1",
         "@opencode-ai/plugin": "^1.1.19",
         "@opencode-ai/sdk": "^1.1.19",
@@ -16,6 +28,213 @@
       "devDependencies": {
         "bun-types": "latest",
         "typescript": "^5.7.3",
+      },
+    },
+    "packages/agents": {
+      "name": "@firefly-swarm/agents",
+      "version": "0.0.1",
+      "dependencies": {
+        "@firefly-swarm/shared": "workspace:*",
+      },
+      "devDependencies": {
+        "@opencode-ai/sdk": "^1.1.19",
+        "typescript": "^5.8.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/sdk": ">=0.0.1",
+      },
+    },
+    "packages/core": {
+      "name": "@firefly-swarm/core",
+      "version": "0.0.1",
+      "dependencies": {
+        "@firefly-swarm/agents": "workspace:*",
+        "@firefly-swarm/hooks": "workspace:*",
+        "@firefly-swarm/mcp-integrations": "workspace:*",
+        "@firefly-swarm/multiplexer": "workspace:*",
+        "@firefly-swarm/shared": "workspace:*",
+        "@firefly-swarm/tool-ast-grep": "workspace:*",
+        "@firefly-swarm/tool-background": "workspace:*",
+        "@firefly-swarm/tool-grep": "workspace:*",
+        "@firefly-swarm/tool-lsp": "workspace:*",
+        "@firefly-swarm/tool-quota": "workspace:*",
+        "@firefly-swarm/tool-skills": "workspace:*",
+      },
+      "devDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+        "typescript": "^5.8.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": ">=1.0.0",
+      },
+    },
+    "packages/hooks": {
+      "name": "@firefly-swarm/hooks",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+      },
+    },
+    "packages/installer": {
+      "name": "@firefly-swarm/installer",
+      "version": "0.0.1",
+      "bin": {
+        "opencode-swarm": "./src/index.ts",
+      },
+      "dependencies": {
+        "@firefly-swarm/network-compiler": "workspace:*",
+        "@firefly-swarm/shared": "workspace:*",
+        "@firefly-swarm/tool-skills": "workspace:*",
+      },
+      "devDependencies": {
+        "typescript": "^5.8.3",
+      },
+    },
+    "packages/mcp-integrations": {
+      "name": "@firefly-swarm/mcp-integrations",
+      "version": "0.5.3",
+      "dependencies": {
+        "@firefly-swarm/shared": "workspace:*",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+      },
+    },
+    "packages/multiplexer": {
+      "name": "@firefly-swarm/multiplexer",
+      "version": "0.0.1",
+      "dependencies": {
+        "@firefly-swarm/shared": "workspace:*",
+      },
+      "devDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+        "typescript": "^5.8.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": ">=1.0.0",
+      },
+    },
+    "packages/network-compiler": {
+      "name": "@firefly-swarm/network-compiler",
+      "version": "0.1.0",
+      "dependencies": {
+        "zod": "^4.1.8",
+      },
+      "devDependencies": {
+        "@opencode-ai/sdk": "^1.1.19",
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/sdk": "^1.1.19",
+      },
+      "optionalPeers": [
+        "@opencode-ai/sdk",
+      ],
+    },
+    "packages/pantheon": {
+      "name": "@firefly-swarm/pantheon",
+      "version": "0.1.0",
+      "dependencies": {
+        "@firefly-swarm/network-compiler": "workspace:*",
+      },
+      "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+    },
+    "packages/shared": {
+      "name": "@firefly-swarm/shared",
+      "version": "0.1.0",
+      "dependencies": {
+        "zod": "^4.1.8",
+      },
+      "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+    },
+    "packages/tool-ast-grep": {
+      "name": "@firefly-swarm/tool-ast-grep",
+      "version": "0.1.0",
+      "dependencies": {
+        "@ast-grep/cli": "^0.40.0",
+      },
+      "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": "*",
+      },
+    },
+    "packages/tool-background": {
+      "name": "@firefly-swarm/tool-background",
+      "version": "0.0.1",
+      "dependencies": {
+        "@firefly-swarm/shared": "workspace:*",
+      },
+      "devDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+        "typescript": "^5.8.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": ">=1.0.0",
+      },
+    },
+    "packages/tool-grep": {
+      "name": "@firefly-swarm/tool-grep",
+      "version": "0.1.0",
+      "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": "*",
+      },
+    },
+    "packages/tool-lsp": {
+      "name": "@firefly-swarm/tool-lsp",
+      "version": "0.1.0",
+      "dependencies": {
+        "vscode-jsonrpc": "^8.2.0",
+        "vscode-languageserver-protocol": "^3.17.5",
+      },
+      "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+      },
+    },
+    "packages/tool-quota": {
+      "name": "@firefly-swarm/tool-quota",
+      "version": "0.1.0",
+      "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": "*",
+      },
+    },
+    "packages/tool-skills": {
+      "name": "@firefly-swarm/tool-skills",
+      "version": "0.0.1",
+      "dependencies": {
+        "@firefly-swarm/shared": "workspace:*",
+        "@modelcontextprotocol/sdk": "^1.25.1",
+      },
+      "devDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+        "typescript": "^5.8.3",
+      },
+      "peerDependencies": {
+        "@opencode-ai/plugin": ">=1.0.0",
       },
     },
   },
@@ -38,6 +257,36 @@
     "@ast-grep/cli-win32-ia32-msvc": ["@ast-grep/cli-win32-ia32-msvc@0.40.5", "", { "os": "win32", "cpu": "ia32" }, "sha512-MHkCxCITVTr8sY9CcVqNKbfUzMa3Hc6IilGXad0Clnw2vNmPfWqSky+hU/UTerr5YHWwWfAVURH7ANZgirtx0Q=="],
 
     "@ast-grep/cli-win32-x64-msvc": ["@ast-grep/cli-win32-x64-msvc@0.40.5", "", { "os": "win32", "cpu": "x64" }, "sha512-/MJ5un7yxlClaaxou9eYl+Kr2xr/yTtYtTq5aLBWjPWA6dmmJ1nAJgx5zKHVuplFXFBrFDQk3paEgAETMTGcrA=="],
+
+    "@firefly-swarm/agents": ["@firefly-swarm/agents@workspace:packages/agents"],
+
+    "@firefly-swarm/core": ["@firefly-swarm/core@workspace:packages/core"],
+
+    "@firefly-swarm/hooks": ["@firefly-swarm/hooks@workspace:packages/hooks"],
+
+    "@firefly-swarm/installer": ["@firefly-swarm/installer@workspace:packages/installer"],
+
+    "@firefly-swarm/mcp-integrations": ["@firefly-swarm/mcp-integrations@workspace:packages/mcp-integrations"],
+
+    "@firefly-swarm/multiplexer": ["@firefly-swarm/multiplexer@workspace:packages/multiplexer"],
+
+    "@firefly-swarm/network-compiler": ["@firefly-swarm/network-compiler@workspace:packages/network-compiler"],
+
+    "@firefly-swarm/pantheon": ["@firefly-swarm/pantheon@workspace:packages/pantheon"],
+
+    "@firefly-swarm/shared": ["@firefly-swarm/shared@workspace:packages/shared"],
+
+    "@firefly-swarm/tool-ast-grep": ["@firefly-swarm/tool-ast-grep@workspace:packages/tool-ast-grep"],
+
+    "@firefly-swarm/tool-background": ["@firefly-swarm/tool-background@workspace:packages/tool-background"],
+
+    "@firefly-swarm/tool-grep": ["@firefly-swarm/tool-grep@workspace:packages/tool-grep"],
+
+    "@firefly-swarm/tool-lsp": ["@firefly-swarm/tool-lsp@workspace:packages/tool-lsp"],
+
+    "@firefly-swarm/tool-quota": ["@firefly-swarm/tool-quota@workspace:packages/tool-quota"],
+
+    "@firefly-swarm/tool-skills": ["@firefly-swarm/tool-skills@workspace:packages/tool-skills"],
 
     "@hono/node-server": ["@hono/node-server@1.19.9", "", { "peerDependencies": { "hono": "^4" } }, "sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw=="],
 

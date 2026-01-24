@@ -1,0 +1,33 @@
+{
+  "name": "@firefly-swarm/pantheon",
+  "version": "0.1.0",
+  "description": "Standard agent network for OpenCode Swarm - a curated set of AI coding agents",
+  "type": "module",
+  "license": "MIT",
+  "main": "index.ts",
+  "exports": {
+    ".": {
+      "bun": "./index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./network": "./network"
+  },
+  "files": [
+    "dist",
+    "network",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun build index.ts --outdir dist --target bun --format esm && tsc --emitDeclarationOnly",
+    "typecheck": "tsc --noEmit",
+    "validate": "bun run index.ts"
+  },
+  "dependencies": {
+    "@firefly-swarm/network-compiler": "workspace:*"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "typescript": "^5.7.3"
+  }
+}

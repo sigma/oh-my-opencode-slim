@@ -9,8 +9,18 @@
     "strict": true,
     "skipLibCheck": true,
     "types": ["bun-types"],
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "baseUrl": ".",
+    "paths": {
+      "@opencode-swarm/shared": ["packages/shared/src/index.ts"],
+      "@opencode-swarm/shared/*": ["packages/shared/src/*"],
+      "@opencode-swarm/hooks": ["packages/hooks/src/index.ts"],
+      "@opencode-swarm/mcp-integrations": ["packages/mcp-integrations/src/index.ts"],
+      "@opencode-swarm/network-compiler": ["packages/network-compiler/src/index.ts"],
+      "@opencode-swarm/tool-grep": ["packages/tool-grep/src/index.ts"],
+      "@opencode-swarm/tool-lsp": ["packages/tool-lsp/src/index.ts"],
+      "@opencode-swarm/tool-quota": ["packages/tool-quota/src/index.ts"]
+    },
+    "outDir": "./dist"
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

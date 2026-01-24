@@ -1,0 +1,41 @@
+{
+  "name": "@firefly-swarm/network-compiler",
+  "version": "0.1.0",
+  "description": "Declarative agent network compiler - parse, validate, and compile markdown-based agent networks",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target bun --format esm && tsc --emitDeclarationOnly",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "zod": "^4.1.8"
+  },
+  "peerDependencies": {
+    "@opencode-ai/sdk": "^1.1.19"
+  },
+  "peerDependenciesMeta": {
+    "@opencode-ai/sdk": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@opencode-ai/sdk": "^1.1.19",
+    "bun-types": "latest",
+    "typescript": "^5.7.3"
+  }
+}
