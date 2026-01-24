@@ -9,6 +9,7 @@ import type {
   ManagedStdioClient,
   McpServerConfig,
   SkillMcpClientInfo,
+  StdioMcpServer,
 } from "./types";
 
 function getConnectionType(config: McpServerConfig): ConnectionType {
@@ -135,16 +136,22 @@ export class SkillMcpManager {
     info: SkillMcpClientInfo,
     config: McpServerConfig
   ): Promise<Client> {
-    if (!("command" in config)) {
+    const stdioConfig = config as StdioMcpServer;
+    if (!stdioConfig.command && !stdioConfig.package) {
       throw new Error(
-        `MCP server "${info.serverName}" missing command for stdio connection.`
+        `MCP server "${info.serverName}" missing command or package for stdio connection.`
       );
     }
 
+    const command = stdioConfig.package ? "bunx" : stdioConfig.command!;
+    const args = stdioConfig.package
+      ? ["-y", stdioConfig.package, ...(stdioConfig.args || [])]
+      : stdioConfig.args || [];
+
     const transport = new StdioClientTransport({
-      command: config.command,
-      args: config.args || [],
-      env: config.env,
+      command,
+      args,
+      env: stdioConfig.env,
       stderr: "ignore",
     });
 
