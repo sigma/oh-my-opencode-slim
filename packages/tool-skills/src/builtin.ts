@@ -150,8 +150,7 @@ const playwrightSkill: SkillDefinition = {
   template: PLAYWRIGHT_TEMPLATE,
   mcpConfig: {
     playwright: {
-      command: "npx",
-      args: ["@playwright/mcp@latest"],
+      package: "@playwright/mcp@latest",
     },
   },
 };

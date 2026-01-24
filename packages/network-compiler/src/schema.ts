@@ -14,16 +14,10 @@ import { z } from "zod";
 /**
  * MCP (Model Context Protocol) server configuration for skills that require external tools.
  */
-export const McpConfigSchema = z
-  .object({
-    command: z.string().optional().describe("Command to run the MCP server"),
-    package: z.string().optional().describe("NPM package to run with bunx"),
-    args: z.array(z.string()).default([]).describe("Arguments to pass to the command"),
-  })
-  .refine((data) => data.command || data.package, {
-    message: "Either command or package must be provided",
-    path: ["command"],
-  });
+export const McpConfigSchema = z.object({
+  package: z.string().describe("NPM package to run with bunx"),
+  args: z.array(z.string()).default([]).describe("Arguments to pass to the command"),
+});
 
 /**
  * Skill definition schema.

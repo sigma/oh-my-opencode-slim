@@ -137,20 +137,10 @@ export class SkillMcpManager {
     config: McpServerConfig
   ): Promise<Client> {
     const stdioConfig = config as StdioMcpServer;
-    if (!stdioConfig.command && !stdioConfig.package) {
-      throw new Error(
-        `MCP server "${info.serverName}" missing command or package for stdio connection.`
-      );
-    }
-
-    const command = stdioConfig.package ? "bunx" : stdioConfig.command!;
-    const args = stdioConfig.package
-      ? ["-y", stdioConfig.package, ...(stdioConfig.args || [])]
-      : stdioConfig.args || [];
 
     const transport = new StdioClientTransport({
-      command,
-      args,
+      command: "bunx",
+      args: ["-y", stdioConfig.package, ...(stdioConfig.args || [])],
       env: stdioConfig.env,
       stderr: "ignore",
     });

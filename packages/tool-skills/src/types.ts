@@ -7,8 +7,7 @@ import type { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/cl
  */
 export interface StdioMcpServer {
   type?: "stdio";
-  command?: string;
-  package?: string;
+  package: string;
   args?: string[];
   env?: Record<string, string>;
 }
