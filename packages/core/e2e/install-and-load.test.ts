@@ -87,6 +87,7 @@ describe("E2E: install and load", () => {
     expect(agents).toHaveProperty("designer");
     expect(agents).toHaveProperty("fixer");
     expect(agents).toHaveProperty("explorer");
+    expect(Object.keys(plugin.agent)).toContain("scribe");
 
     // Check tools
     expect(plugin.tool).toBeDefined();
@@ -109,28 +110,34 @@ describe("E2E: install and load", () => {
     expect(tools.omos_skill.description).toContain("playwright");
 
     // 4. Live ping check
-    const result = Bun.spawnSync(["opencode", "run", "ping all agents"], {
+    const pingResult = Bun.spawnSync([
+      "opencode",
+      "run",
+      "who are you?",
+      "--agent",
+      "scribe",
+    ], {
       env: {
         ...process.env,
         XDG_CONFIG_HOME: tempDir,
       },
     });
 
-    const stdout = result.stdout.toString();
-    const stderr = result.stderr.toString();
+    const stdout = pingResult.stdout.toString();
+    const stderr = pingResult.stderr.toString();
     
-    if (result.exitCode !== 0) {
+    if (pingResult.exitCode !== 0) {
       if (stderr.includes("not found") || stderr.includes("ENOENT")) {
         console.warn("opencode binary not found, skipping live check");
       } else {
-        console.error("opencode run failed with exit code:", result.exitCode);
+        console.error("opencode run failed with exit code:", pingResult.exitCode);
         console.error("stdout:", stdout);
         console.error("stderr:", stderr);
-        expect(result.exitCode).toBe(0);
+        expect(pingResult.exitCode).toBe(0);
       }
     } else {
-      expect(result.exitCode).toBe(0);
-      expect(stdout).toMatch(/Pong|orchestrator|agent|responsive|status/i);
+      expect(pingResult.exitCode).toBe(0);
+      expect(stdout.toLowerCase()).toMatch(/scribe|documentation/i);
     }
   }, 120000);
 });
