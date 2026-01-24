@@ -7,6 +7,8 @@ import {
   getOpenCodeVersion,
   isRgInstalled,
   isAstGrepInstalled,
+  isUvxInstalled,
+  isGoInstalled,
   addAuthPlugins,
   addProviderConfig,
   disableDefaultAgents,
@@ -76,6 +78,8 @@ async function checkOpenCodeInstalled(): Promise<{ ok: boolean; version?: string
 async function checkDependencies(): Promise<void> {
   const rgInstalled = await isRgInstalled()
   const sgInstalled = await isAstGrepInstalled()
+  const uvxInstalled = await isUvxInstalled()
+  const goInstalled = await isGoInstalled()
 
   if (rgInstalled) {
     printSuccess("ripgrep (rg) detected")
@@ -89,6 +93,18 @@ async function checkDependencies(): Promise<void> {
   } else {
     printWarning("ast-grep (sg) not found. Structural search will be disabled.")
     printInfo(`     ${DIM}Install: brew install ast-grep or cargo install ast-grep${RESET}`)
+  }
+
+  if (uvxInstalled) {
+    printSuccess("Python Runtime (uvx) detected")
+  } else {
+    printInfo("○ Python Runtime (uvx) not found - required for Python MCPs")
+  }
+
+  if (goInstalled) {
+    printSuccess("Go Runtime (go) detected")
+  } else {
+    printInfo("○ Go Runtime (go) not found - required for Go MCPs")
   }
 }
 

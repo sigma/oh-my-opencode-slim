@@ -63,6 +63,45 @@ export async function isAstGrepInstalled(): Promise<boolean> {
   }
 }
 
+export async function isUvxInstalled(): Promise<boolean> {
+  // Try 'uvx' first
+  try {
+    const proc = Bun.spawn(["uvx", "--version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    await proc.exited
+    if (proc.exitCode === 0) return true
+  } catch {
+    // Ignore error and try next
+  }
+
+  // Then try 'uv'
+  try {
+    const proc = Bun.spawn(["uv", "--version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    await proc.exited
+    return proc.exitCode === 0
+  } catch {
+    return false
+  }
+}
+
+export async function isGoInstalled(): Promise<boolean> {
+  try {
+    const proc = Bun.spawn(["go", "version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    await proc.exited
+    return proc.exitCode === 0
+  } catch {
+    return false
+  }
+}
+
 export async function getOpenCodeVersion(): Promise<string | null> {
   try {
     const proc = Bun.spawn(["opencode", "--version"], {
