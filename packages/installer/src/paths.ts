@@ -28,8 +28,9 @@ export function getConfigJsonc(): string {
   return join(getConfigDir(), "opencode.jsonc")
 }
 
-export function getLiteConfig(): string {
-  return join(getConfigDir(), "oh-my-opencode-slim.json")
+export function getLiteConfig(packageName: string): string {
+  const sanitized = packageName.replace(/^@/, "").replace("/", "-")
+  return join(getConfigDir(), `${sanitized}.json`)
 }
 
 export function getExistingConfigPath(): string {

@@ -14,6 +14,7 @@ import {
   disableDefaultAgents,
   detectCurrentConfig,
   generateLiteConfig,
+  PACKAGE_NAME,
 } from "./config-manager"
 
 // Colors
@@ -35,9 +36,9 @@ const SYMBOLS = {
   star: `${YELLOW}★${RESET}`,
 }
 
-function printHeader(isUpdate: boolean): void {
+function printHeader(isUpdate: boolean, packageName: string = PACKAGE_NAME): void {
   console.log()
-  console.log(`${BOLD}oh-my-opencode-slim ${isUpdate ? "Update" : "Install"}${RESET}`)
+  console.log(`${BOLD}${packageName} ${isUpdate ? "Update" : "Install"}${RESET}`)
   console.log("=".repeat(30))
   console.log()
 }
@@ -159,6 +160,7 @@ function argsToConfig(args: InstallArgs): InstallConfig {
     hasOpenAI: args.openai === "yes",
     hasOpencodeZen: true, // Always enabled - free models available to all users
     hasTmux: args.tmux === "yes",
+    packageName: args.packageName,
   }
 }
 
@@ -176,7 +178,7 @@ async function askYesNo(
   return defaultValue
 }
 
-async function runInteractiveMode(detected: DetectedConfig): Promise<InstallConfig> {
+async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): Promise<InstallConfig> {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
   // TODO: tmux has a bug, disabled for now
   // const tmuxInstalled = await isTmuxInstalled()
@@ -208,6 +210,7 @@ async function runInteractiveMode(detected: DetectedConfig): Promise<InstallConf
       hasOpenAI: openai === "yes",
       hasOpencodeZen: true,
       hasTmux: false,
+      packageName: args.packageName,
     }
   } finally {
     rl.close()
@@ -217,8 +220,9 @@ async function runInteractiveMode(detected: DetectedConfig): Promise<InstallConf
 async function runInstall(config: InstallConfig): Promise<number> {
   const detected = detectCurrentConfig()
   const isUpdate = detected.isInstalled
+  const pkgName = config.packageName || PACKAGE_NAME
 
-  printHeader(isUpdate)
+  printHeader(isUpdate, pkgName)
 
   // Calculate total steps dynamically
   let totalSteps = 5 // Base: check opencode, check deps, add plugin, disable default agents, write lite config
@@ -233,8 +237,8 @@ async function runInstall(config: InstallConfig): Promise<number> {
   printStep(step++, totalSteps, "Checking system dependencies...")
   await checkDependencies()
 
-  printStep(step++, totalSteps, "Adding oh-my-opencode-slim plugin...")
-  const pluginResult = await addPluginToOpenCodeConfig()
+  printStep(step++, totalSteps, `Adding ${pkgName} plugin...`)
+  const pluginResult = await addPluginToOpenCodeConfig(pkgName)
   if (!handleStepResult(pluginResult, "Plugin added")) return 1
 
   printStep(step++, totalSteps, "Disabling OpenCode default agents...")
@@ -251,8 +255,8 @@ async function runInstall(config: InstallConfig): Promise<number> {
     if (!handleStepResult(providerResult, "Providers configured")) return 1
   }
 
-  printStep(step++, totalSteps, "Writing oh-my-opencode-slim configuration...")
-  const liteResult = writeLiteConfig(config)
+  printStep(step++, totalSteps, `Writing ${pkgName} configuration...`)
+  const liteResult = writeLiteConfig(pkgName, config)
   if (!handleStepResult(liteResult, "Config written")) return 1
 
   // Summary
@@ -291,6 +295,8 @@ async function runInstall(config: InstallConfig): Promise<number> {
 }
 
 export async function install(args: InstallArgs): Promise<number> {
+  const pkgName = args.packageName || PACKAGE_NAME
+
   // Non-interactive mode: all args must be provided
   if (!args.tui) {
     const requiredArgs = ["antigravity", "openai", "tmux"] as const
@@ -300,13 +306,13 @@ export async function install(args: InstallArgs): Promise<number> {
     })
 
     if (errors.length > 0) {
-      printHeader(false)
+      printHeader(false, pkgName)
       printError("Missing or invalid arguments:")
       for (const key of errors) {
         console.log(`  ${SYMBOLS.bullet} --${key}=<yes|no>`)
       }
       console.log()
-      printInfo("Usage: bunx oh-my-opencode-slim install --no-tui --antigravity=<yes|no> --openai=<yes|no> --tmux=<yes|no>")
+      printInfo(`Usage: bunx @firefly-swarm/installer install ${pkgName} --no-tui --antigravity=<yes|no> --openai=<yes|no> --tmux=<yes|no>`)
       console.log()
       return 1
     }
@@ -317,13 +323,13 @@ export async function install(args: InstallArgs): Promise<number> {
   // Interactive mode
   const detected = detectCurrentConfig()
 
-  printHeader(detected.isInstalled)
+  printHeader(detected.isInstalled, pkgName)
 
   printStep(1, 1, "Checking OpenCode installation...")
   const { ok } = await checkOpenCodeInstalled()
   if (!ok) return 1
   console.log()
 
-  const config = await runInteractiveMode(detected)
+  const config = await runInteractiveMode(detected, args)
   return runInstall(config)
 }

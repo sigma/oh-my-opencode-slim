@@ -13,7 +13,10 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@firefly-swarm/network-compiler": ["../network-compiler/src/index.ts"]
+      "@firefly-swarm/network-compiler": ["../network-compiler/src/index.ts"],
+      "@firefly-swarm/core": ["../core/src/index.ts"],
+      "@firefly-swarm/agents": ["../agents/src/index.ts"],
+      "@firefly-swarm/shared": ["../shared/src/index.ts"]
     }
   },
   "include": ["*.ts"],

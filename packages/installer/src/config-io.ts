@@ -12,7 +12,7 @@ import {
 } from "./providers"
 import { fetchLatestVersion } from "./system"
 
-const PACKAGE_NAME = "oh-my-opencode-slim"
+export const PACKAGE_NAME = "@firefly-swarm/pantheon"
 
 /**
  * Strip JSON comments (single-line // and multi-line) and trailing commas for JSONC support.
@@ -76,7 +76,7 @@ export function writeConfig(configPath: string, config: OpenCodeConfig): void {
   renameSync(tmpPath, configPath)
 }
 
-export async function addPluginToOpenCodeConfig(): Promise<ConfigMergeResult> {
+export async function addPluginToOpenCodeConfig(packageName: string = PACKAGE_NAME): Promise<ConfigMergeResult> {
   try {
     ensureConfigDir()
   } catch (err) {
@@ -97,13 +97,13 @@ export async function addPluginToOpenCodeConfig(): Promise<ConfigMergeResult> {
     const config = parsedConfig ?? {}
     const plugins = config.plugin ?? []
 
-    // Remove existing oh-my-opencode-slim entries
+    // Remove existing entries for this package
     const filteredPlugins = plugins.filter(
-      (p) => p !== PACKAGE_NAME && !p.startsWith(`${PACKAGE_NAME}@`)
+      (p) => p !== packageName && !p.startsWith(`${packageName}@`)
     )
 
     // Add fresh entry
-    filteredPlugins.push(PACKAGE_NAME)
+    filteredPlugins.push(packageName)
     config.plugin = filteredPlugins
 
     writeConfig(configPath, config)
@@ -180,13 +180,16 @@ export function addProviderConfig(installConfig: InstallConfig): ConfigMergeResu
   }
 }
 
-export function writeLiteConfig(installConfig: InstallConfig): ConfigMergeResult {
-  const configPath = getLiteConfig()
+export function writeLiteConfig(
+  packageName: string,
+  installConfig: InstallConfig
+): ConfigMergeResult {
+  const configPath = getLiteConfig(packageName)
 
   try {
     ensureConfigDir()
     const config = generateLiteConfig(installConfig)
-    
+
     // Atomic write for lite config too
     const tmpPath = `${configPath}.tmp`
     const bakPath = `${configPath}.bak`
@@ -199,7 +202,7 @@ export function writeLiteConfig(installConfig: InstallConfig): ConfigMergeResult
 
     writeFileSync(tmpPath, content)
     renameSync(tmpPath, configPath)
-    
+
     return { success: true, configPath }
   } catch (err) {
     return {
@@ -254,7 +257,7 @@ export function detectCurrentConfig(): DetectedConfig {
   result.hasAntigravity = plugins.some((p) => p.startsWith("opencode-antigravity-auth"))
 
   // Try to detect from lite config
-  const { config: liteConfig } = parseConfig(getLiteConfig())
+  const { config: liteConfig } = parseConfig(getLiteConfig(PACKAGE_NAME))
   if (liteConfig && typeof liteConfig === "object") {
     const configObj = liteConfig as Record<string, any>
     const presetName = configObj.preset as string

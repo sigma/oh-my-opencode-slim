@@ -1,4 +1,4 @@
-import type { Plugin } from "@opencode-ai/plugin";
+import type { Plugin, PluginInput } from "@opencode-ai/plugin";
 import { getAgentConfigs } from "@firefly-swarm/agents";
 import { BackgroundTaskManager, createBackgroundTools } from "@firefly-swarm/tool-background";
 import { MultiplexerManager, createTmuxProvider, startTmuxCheck } from "@firefly-swarm/multiplexer";
@@ -21,9 +21,13 @@ import {
 import { log, type TmuxConfig } from "@firefly-swarm/shared";
 import { loadPluginConfig } from "./loader";
 
-const OhMyOpenCodeLite: Plugin = async (ctx) => {
-  const config = loadPluginConfig(ctx.directory);
-  const agents = getAgentConfigs(config);
+export const createPlugin = (
+  customAgents?: Record<string, any>,
+  configFilename?: string,
+  pluginName: string = "@firefly-swarm/core"
+): Plugin => async (ctx: PluginInput) => {
+  const config = loadPluginConfig(ctx.directory, configFilename);
+  const agents = customAgents || getAgentConfigs(config);
 
   // Parse tmux config with defaults
   const tmuxConfig: TmuxConfig = {
@@ -79,7 +83,7 @@ const OhMyOpenCodeLite: Plugin = async (ctx) => {
   const postReadNudgeHook = createPostReadNudgeHook();
 
   return {
-    name: "oh-my-opencode-slim",
+    name: pluginName,
 
     agent: agents,
 
@@ -135,7 +139,7 @@ const OhMyOpenCodeLite: Plugin = async (ctx) => {
   };
 };
 
-export default OhMyOpenCodeLite;
+export default createPlugin;
 
 export type { PluginConfig, AgentOverrideConfig, AgentName, McpName, TmuxConfig, TmuxLayout } from "@firefly-swarm/shared";
 export type { RemoteMcpConfig } from "@firefly-swarm/mcp-integrations";

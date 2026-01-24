@@ -89,16 +89,17 @@ function deepMerge<T extends Record<string, unknown>>(base?: T, override?: T): T
  * deep-merged, while top-level arrays are replaced entirely by project config.
  * 
  * @param directory - Project directory to search for .opencode config
+ * @param filename - Optional custom configuration filename (defaults to oh-my-opencode-slim.json)
  * @returns Merged plugin configuration (empty object if no configs found)
  */
-export function loadPluginConfig(directory: string): PluginConfig {
+export function loadPluginConfig(directory: string, filename: string = CONFIG_FILENAME): PluginConfig {
   const userConfigPath = path.join(
     getUserConfigDir(),
     "opencode",
     CONFIG_FILENAME
   );
 
-  const projectConfigPath = path.join(directory, ".opencode", CONFIG_FILENAME);
+  const projectConfigPath = path.join(directory, ".opencode", filename);
 
   let config: PluginConfig = loadConfigFromPath(userConfigPath) ?? {};
 

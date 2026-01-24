@@ -24,10 +24,13 @@
     "validate": "bun run index.ts"
   },
   "dependencies": {
-    "@firefly-swarm/network-compiler": "workspace:*"
+    "@firefly-swarm/network-compiler": "workspace:*",
+    "@firefly-swarm/core": "workspace:*",
+    "@firefly-swarm/agents": "workspace:*"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "@opencode-ai/plugin": "^1.1.19"
   }
 }

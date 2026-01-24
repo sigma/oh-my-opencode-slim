@@ -19,6 +19,8 @@ function parseArgs(args: string[]): InstallArgs {
     } else if (arg === "-h" || arg === "--help") {
       printHelp()
       process.exit(0)
+    } else if (!arg.startsWith("-")) {
+      result.packageName = arg
     }
   }
 
@@ -27,9 +29,12 @@ function parseArgs(args: string[]): InstallArgs {
 
 function printHelp(): void {
   console.log(`
-oh-my-opencode-slim installer
+@firefly-swarm/installer
 
-Usage: bunx oh-my-opencode-slim install [OPTIONS]
+Usage: bunx @firefly-swarm/installer install [PACKAGE] [OPTIONS]
+
+Arguments:
+  PACKAGE                Package name to install (default: @firefly-swarm/pantheon)
 
 Options:
   --antigravity=yes|no   Antigravity subscription (yes/no)
@@ -39,8 +44,9 @@ Options:
   -h, --help             Show this help message
 
 Examples:
-  bunx oh-my-opencode-slim install
-  bunx oh-my-opencode-slim install --no-tui --antigravity=yes --openai=yes --tmux=no
+  bunx @firefly-swarm/installer install
+  bunx @firefly-swarm/installer install @firefly-swarm/pantheon
+  bunx @firefly-swarm/installer install --no-tui --antigravity=yes --openai=yes --tmux=no
 `)
 }
 

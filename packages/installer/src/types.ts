@@ -5,6 +5,7 @@ export interface InstallArgs {
   antigravity?: BooleanArg
   openai?: BooleanArg
   tmux?: BooleanArg
+  packageName?: string
 }
 
 export interface OpenCodeConfig {
@@ -19,6 +20,7 @@ export interface InstallConfig {
   hasOpenAI: boolean
   hasOpencodeZen: boolean
   hasTmux: boolean
+  packageName?: string
 }
 
 export interface ConfigMergeResult {
