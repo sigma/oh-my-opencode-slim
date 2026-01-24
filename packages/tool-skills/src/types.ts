@@ -6,7 +6,7 @@ import type { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/cl
  * Stdio MCP server configuration (local process)
  */
 export interface StdioMcpServer {
-  type?: "stdio";
+  type?: "npm" | "python" | "go";
   package: string;
   args?: string[];
   env?: Record<string, string>;

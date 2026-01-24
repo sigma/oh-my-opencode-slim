@@ -58,7 +58,8 @@ describe("Network Loader", () => {
     
     expect(playwright.frontMatter.type).toBe("mcp");
     expect(playwright.frontMatter.mcp).toBeDefined();
-    expect(playwright.frontMatter.mcp?.command).toBe("npx");
+    expect(playwright.frontMatter.mcp?.type).toBe("npm");
+    expect(playwright.frontMatter.mcp?.package).toBe("@playwright/mcp");
   });
 });
 

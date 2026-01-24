@@ -137,10 +137,30 @@ export class SkillMcpManager {
     config: McpServerConfig
   ): Promise<Client> {
     const stdioConfig = config as StdioMcpServer;
+    const type = stdioConfig.type || "npm";
+
+    let command: string;
+    let args: string[];
+
+    switch (type) {
+      case "python":
+        command = "uvx";
+        args = [stdioConfig.package, ...(stdioConfig.args || [])];
+        break;
+      case "go":
+        command = "go";
+        args = ["run", stdioConfig.package, ...(stdioConfig.args || [])];
+        break;
+      case "npm":
+      default:
+        command = "bunx";
+        args = ["-y", stdioConfig.package, ...(stdioConfig.args || [])];
+        break;
+    }
 
     const transport = new StdioClientTransport({
-      command: "bunx",
-      args: ["-y", stdioConfig.package, ...(stdioConfig.args || [])],
+      command,
+      args,
       env: stdioConfig.env,
       stderr: "ignore",
     });

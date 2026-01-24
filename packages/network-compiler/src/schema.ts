@@ -15,7 +15,8 @@ import { z } from "zod";
  * MCP (Model Context Protocol) server configuration for skills that require external tools.
  */
 export const McpConfigSchema = z.object({
-  package: z.string().describe("NPM package to run with bunx"),
+  type: z.enum(["npm", "python", "go"]).default("npm").describe("Type of MCP server execution"),
+  package: z.string().describe("Package name (e.g. @modelcontextprotocol/server-everything)"),
   args: z.array(z.string()).default([]).describe("Arguments to pass to the command"),
 });
 
