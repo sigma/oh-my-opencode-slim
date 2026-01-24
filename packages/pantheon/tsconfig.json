@@ -11,7 +11,10 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
-    "rootDir": "."
+    "baseUrl": ".",
+    "paths": {
+      "@firefly-swarm/network-compiler": ["../network-compiler/src/index.ts"]
+    }
   },
   "include": ["*.ts"],
   "exclude": ["node_modules", "dist"]

@@ -24,6 +24,45 @@ export async function isTmuxInstalled(): Promise<boolean> {
   }
 }
 
+export async function isRgInstalled(): Promise<boolean> {
+  try {
+    const proc = Bun.spawn(["rg", "--version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    await proc.exited
+    return proc.exitCode === 0
+  } catch {
+    return false
+  }
+}
+
+export async function isAstGrepInstalled(): Promise<boolean> {
+  // Try 'sg' first
+  try {
+    const proc = Bun.spawn(["sg", "--version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    await proc.exited
+    if (proc.exitCode === 0) return true
+  } catch {
+    // Ignore error and try next
+  }
+
+  // Then try 'ast-grep'
+  try {
+    const proc = Bun.spawn(["ast-grep", "--version"], {
+      stdout: "pipe",
+      stderr: "pipe",
+    })
+    await proc.exited
+    return proc.exitCode === 0
+  } catch {
+    return false
+  }
+}
+
 export async function getOpenCodeVersion(): Promise<string | null> {
   try {
     const proc = Bun.spawn(["opencode", "--version"], {

@@ -8,7 +8,6 @@ import {
   DEFAULT_MAX_OUTPUT_BYTES,
   DEFAULT_MAX_MATCHES,
 } from "./constants"
-import { ensureAstGrepBinary } from "./downloader"
 import type { CliMatch, CliLanguage, SgResult } from "./types"
 
 export interface RunOptions {
@@ -39,12 +38,6 @@ export async function getAstGrepPath(): Promise<string | null> {
     if (syncPath && existsSync(syncPath)) {
       setSgCliPath(syncPath)
       return syncPath
-    }
-
-    const downloadedPath = await ensureAstGrepBinary()
-    if (downloadedPath) {
-      setSgCliPath(downloadedPath)
-      return downloadedPath
     }
 
     return null
@@ -86,10 +79,7 @@ export async function runSg(options: RunOptions): Promise<SgResult> {
   let cliPath = getSgCliPath()
 
   if (!existsSync(cliPath) && cliPath !== "sg") {
-    const downloadedPath = await getAstGrepPath()
-    if (downloadedPath) {
-      cliPath = downloadedPath
-    }
+    await getAstGrepPath()
   }
 
   const timeout = DEFAULT_TIMEOUT_MS
@@ -133,22 +123,16 @@ export async function runSg(options: RunOptions): Promise<SgResult> {
       nodeError.message?.includes("ENOENT") ||
       nodeError.message?.includes("not found")
     ) {
-      const downloadedPath = await ensureAstGrepBinary()
-      if (downloadedPath) {
-        setSgCliPath(downloadedPath)
-        return runSg(options)
-      } else {
-        return {
-          matches: [],
-          totalMatches: 0,
-          truncated: false,
-          error:
-            `ast-grep CLI binary not found.\n\n` +
-            `Auto-download failed. Manual install options:\n` +
-            `  bun add -D @ast-grep/cli\n` +
-            `  cargo install ast-grep --locked\n` +
-            `  brew install ast-grep`,
-        }
+      return {
+        matches: [],
+        totalMatches: 0,
+        truncated: false,
+        error:
+          `ast-grep CLI binary not found.\n\n` +
+          `Manual install options:\n` +
+          `  bun add -D @ast-grep/cli\n` +
+          `  cargo install ast-grep --locked\n` +
+          `  brew install ast-grep`,
       }
     }
 

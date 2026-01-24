@@ -8,8 +8,8 @@ import {
   lsp_diagnostics,
   lsp_rename,
 } from "@firefly-swarm/tool-lsp";
-import { grep } from "@firefly-swarm/tool-grep";
-import { ast_grep_search, ast_grep_replace } from "@firefly-swarm/tool-ast-grep";
+import { grep, checkGrepAvailability } from "@firefly-swarm/tool-grep";
+import { ast_grep_search, ast_grep_replace, checkEnvironment as checkAstGrepEnvironment } from "@firefly-swarm/tool-ast-grep";
 import { antigravity_quota } from "@firefly-swarm/tool-quota";
 import { createSkillTools, SkillMcpManager } from "@firefly-swarm/tool-skills";
 import { getMcpServers } from "@firefly-swarm/mcp-integrations";
@@ -45,6 +45,19 @@ const OhMyOpenCodeLite: Plugin = async (ctx) => {
 
   const backgroundManager = new BackgroundTaskManager(ctx, tmuxConfig, config);
   const backgroundTools = createBackgroundTools(ctx, backgroundManager, tmuxConfig, config);
+
+  // Check tool prerequisites
+  const isGrepAvailable = checkGrepAvailability();
+  const astGrepEnv = checkAstGrepEnvironment();
+  const isAstGrepAvailable = astGrepEnv.cli.available;
+
+  if (!isGrepAvailable) {
+    log("[plugin] grep (ripgrep) not found, disabling grep tool");
+  }
+  if (!isAstGrepAvailable) {
+    log("[plugin] ast-grep not found, disabling ast-grep tools");
+  }
+
   const mcps = getMcpServers(config.disabled_mcps);
   const skillMcpManager = SkillMcpManager.getInstance();
   const skillTools = createSkillTools(skillMcpManager, config);
@@ -76,9 +89,8 @@ const OhMyOpenCodeLite: Plugin = async (ctx) => {
       lsp_find_references,
       lsp_diagnostics,
       lsp_rename,
-      grep,
-      ast_grep_search,
-      ast_grep_replace,
+      ...(isGrepAvailable ? { grep } : {}),
+      ...(isAstGrepAvailable ? { ast_grep_search, ast_grep_replace } : {}),
       antigravity_quota,
       ...skillTools,
     },

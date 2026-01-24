@@ -2,7 +2,6 @@ import { createRequire } from "node:module"
 import { dirname, join } from "node:path"
 import { existsSync, statSync } from "node:fs"
 import { spawnSync } from "node:child_process"
-import { getCachedBinaryPath } from "./downloader"
 import { CLI_LANGUAGES } from "./types"
 
 type Platform = "darwin" | "linux" | "win32" | "unsupported"
@@ -40,11 +39,6 @@ let resolvedCliPath: string | null = null
 
 export function findSgCliPathSync(): string | null {
   const binaryName = process.platform === "win32" ? "sg.exe" : "sg"
-
-  const cachedPath = getCachedBinaryPath()
-  if (cachedPath && isValidBinary(cachedPath)) {
-    return cachedPath
-  }
 
   try {
     const require = createRequire(import.meta.url)

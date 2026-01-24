@@ -5,6 +5,8 @@ import {
   writeLiteConfig,
   isOpenCodeInstalled,
   getOpenCodeVersion,
+  isRgInstalled,
+  isAstGrepInstalled,
   addAuthPlugins,
   addProviderConfig,
   disableDefaultAgents,
@@ -69,6 +71,25 @@ async function checkOpenCodeInstalled(): Promise<{ ok: boolean; version?: string
   const version = await getOpenCodeVersion()
   printSuccess(`OpenCode ${version ?? ""} detected`)
   return { ok: true, version: version ?? undefined }
+}
+
+async function checkDependencies(): Promise<void> {
+  const rgInstalled = await isRgInstalled()
+  const sgInstalled = await isAstGrepInstalled()
+
+  if (rgInstalled) {
+    printSuccess("ripgrep (rg) detected")
+  } else {
+    printWarning("ripgrep (rg) not found. Some features may be limited.")
+    printInfo(`     ${DIM}Install: brew install ripgrep or cargo install ripgrep${RESET}`)
+  }
+
+  if (sgInstalled) {
+    printSuccess("ast-grep (sg) detected")
+  } else {
+    printWarning("ast-grep (sg) not found. Structural search will be disabled.")
+    printInfo(`     ${DIM}Install: brew install ast-grep or cargo install ast-grep${RESET}`)
+  }
 }
 
 function handleStepResult(result: ConfigMergeResult, successMsg: string): boolean {
@@ -184,7 +205,7 @@ async function runInstall(config: InstallConfig): Promise<number> {
   printHeader(isUpdate)
 
   // Calculate total steps dynamically
-  let totalSteps = 4 // Base: check opencode, add plugin, disable default agents, write lite config
+  let totalSteps = 5 // Base: check opencode, check deps, add plugin, disable default agents, write lite config
   if (config.hasAntigravity) totalSteps += 2 // auth plugins + provider config
 
   let step = 1
@@ -192,6 +213,9 @@ async function runInstall(config: InstallConfig): Promise<number> {
   printStep(step++, totalSteps, "Checking OpenCode installation...")
   const { ok } = await checkOpenCodeInstalled()
   if (!ok) return 1
+
+  printStep(step++, totalSteps, "Checking system dependencies...")
+  await checkDependencies()
 
   printStep(step++, totalSteps, "Adding oh-my-opencode-slim plugin...")
   const pluginResult = await addPluginToOpenCodeConfig()
