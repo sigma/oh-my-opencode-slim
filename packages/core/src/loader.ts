@@ -3,7 +3,7 @@ import * as path from "path";
 import * as os from "os";
 import { PluginConfigSchema, type PluginConfig } from "@firefly-swarm/shared";
 
-const CONFIG_FILENAME = "oh-my-opencode-slim.json";
+const CONFIG_FILENAME = "firefly-swarm.json";
 
 /**
  * Get the user's configuration directory following XDG Base Directory specification.
@@ -30,7 +30,7 @@ function loadConfigFromPath(configPath: string): PluginConfig | null {
     const result = PluginConfigSchema.safeParse(rawConfig);
 
     if (!result.success) {
-      console.warn(`[oh-my-opencode-slim] Invalid config at ${configPath}:`);
+      console.warn(`[firefly-swarm] Invalid config at ${configPath}:`);
       console.warn(result.error.format());
       return null;
     }
@@ -39,7 +39,7 @@ function loadConfigFromPath(configPath: string): PluginConfig | null {
   } catch (error) {
     // File doesn't exist or isn't readable - this is expected and fine
     if (error instanceof Error && 'code' in error && (error as NodeJS.ErrnoException).code !== 'ENOENT') {
-      console.warn(`[oh-my-opencode-slim] Error reading config from ${configPath}:`, error.message);
+      console.warn(`[firefly-swarm] Error reading config from ${configPath}:`, error.message);
     }
     return null;
   }
@@ -82,14 +82,14 @@ function deepMerge<T extends Record<string, unknown>>(base?: T, override?: T): T
  * Load plugin configuration from user and project config files, merging them appropriately.
  * 
  * Configuration is loaded from two locations:
- * 1. User config: ~/.config/opencode/oh-my-opencode-slim.json (or $XDG_CONFIG_HOME)
- * 2. Project config: <directory>/.opencode/oh-my-opencode-slim.json
+  * 1. User config: ~/.config/opencode/firefly-swarm.json (or $XDG_CONFIG_HOME)
+ * 2. Project config: <directory>/.opencode/firefly-swarm.json
  * 
  * Project config takes precedence over user config. Nested objects (agents, tmux) are
  * deep-merged, while top-level arrays are replaced entirely by project config.
  * 
  * @param directory - Project directory to search for .opencode config
- * @param filename - Optional custom configuration filename (defaults to oh-my-opencode-slim.json)
+ * @param filename - Optional custom configuration filename (defaults to firefly-swarm.json)
  * @returns Merged plugin configuration (empty object if no configs found)
  */
 export function loadPluginConfig(directory: string, filename: string = CONFIG_FILENAME): PluginConfig {
@@ -114,7 +114,7 @@ export function loadPluginConfig(directory: string, filename: string = CONFIG_FI
   }
 
   // Override preset from environment variable if set
-  const envPreset = process.env.OH_MY_OPENCODE_SLIM_PRESET;
+  const envPreset = process.env.FIREFLY_SWARM_PRESET;
   if (envPreset) {
     config.preset = envPreset;
   }
@@ -129,7 +129,7 @@ export function loadPluginConfig(directory: string, filename: string = CONFIG_FI
       // Preset name specified but doesn't exist - warn user
       const presetSource = envPreset === config.preset ? "environment variable" : "config file";
       const availablePresets = config.presets ? Object.keys(config.presets).join(", ") : "none";
-      console.warn(`[oh-my-opencode-slim] Preset "${config.preset}" not found (from ${presetSource}). Available presets: ${availablePresets}`);
+      console.warn(`[firefly-swarm] Preset "${config.preset}" not found (from ${presetSource}). Available presets: ${availablePresets}`);
     }
   }
 

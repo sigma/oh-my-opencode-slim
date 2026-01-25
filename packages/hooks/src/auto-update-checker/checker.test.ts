@@ -4,10 +4,10 @@ import * as fs from "node:fs"
 
 // Mock the dependencies
 mock.module("./constants", () => ({
-    PACKAGE_NAME: "oh-my-opencode-slim",
+    PACKAGE_NAME: "@firefly-swarm/installer",
     USER_OPENCODE_CONFIG: "/mock/config/opencode.json",
     USER_OPENCODE_CONFIG_JSONC: "/mock/config/opencode.jsonc",
-    INSTALLED_PACKAGE_JSON: "/mock/cache/node_modules/oh-my-opencode-slim/package.json"
+    INSTALLED_PACKAGE_JSON: "/mock/cache/node_modules/@firefly-swarm/installer/package.json"
 }))
 
 mock.module("node:fs", () => ({
@@ -59,10 +59,10 @@ describe("auto-update-checker/checker", () => {
 
             readMock.mockImplementation((p: string) => {
                 if (p.includes("opencode.json")) {
-                    return JSON.stringify({ plugin: ["file:///dev/oh-my-opencode-slim"] })
+                    return JSON.stringify({ plugin: ["file:///dev/@firefly-swarm/installer"] })
                 }
                 if (p.includes("package.json")) {
-                    return JSON.stringify({ name: "oh-my-opencode-slim", version: "1.2.3-dev" })
+                    return JSON.stringify({ name: "@firefly-swarm/installer", version: "1.2.3-dev" })
                 }
                 return ""
             })
@@ -78,12 +78,12 @@ describe("auto-update-checker/checker", () => {
 
             existsMock.mockImplementation((p: string) => p.includes("opencode.json"))
             readMock.mockImplementation(() => JSON.stringify({
-                plugin: ["oh-my-opencode-slim"]
+                plugin: ["@firefly-swarm/installer"]
             }))
 
             const entry = findPluginEntry("/test")
             expect(entry).not.toBeNull()
-            expect(entry?.entry).toBe("oh-my-opencode-slim")
+            expect(entry?.entry).toBe("@firefly-swarm/installer")
             expect(entry?.isPinned).toBe(false)
             expect(entry?.pinnedVersion).toBeNull()
         })
@@ -94,7 +94,7 @@ describe("auto-update-checker/checker", () => {
 
             existsMock.mockImplementation((p: string) => p.includes("opencode.json"))
             readMock.mockImplementation(() => JSON.stringify({
-                plugin: ["oh-my-opencode-slim@1.0.0"]
+                plugin: ["@firefly-swarm/installer@1.0.0"]
             }))
 
             const entry = findPluginEntry("/test")

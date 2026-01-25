@@ -79,7 +79,7 @@ describe("E2E: install and load", () => {
     })) as any;
 
     // 3. Assertions
-    expect(plugin.name).toBe("oh-my-opencode-slim");
+    expect(plugin.name).toBe("@firefly-swarm/pantheon");
     
     // Check agents
     expect(plugin.agent).toBeDefined();

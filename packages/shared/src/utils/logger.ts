@@ -8,7 +8,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 
-const logFile = path.join(os.tmpdir(), "oh-my-opencode-slim.log");
+const logFile = path.join(os.tmpdir(), "firefly-swarm.log");
 
 /**
  * Log a message to the debug log file.

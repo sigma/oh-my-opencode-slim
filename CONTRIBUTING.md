@@ -1,14 +1,14 @@
-# Contributing to oh-my-opencode-slim
+# Contributing to firefly-swarm
 
-Thank you for your interest in contributing to oh-my-opencode-slim! We welcome all contributions that help make this agent orchestration plugin more efficient, powerful, and user-friendly.
+Thank you for your interest in contributing to firefly-swarm! We welcome all contributions that help make this agent orchestration plugin more efficient, powerful, and user-friendly.
 
 ## Getting Started
 
 1.  **Fork the repository** on GitHub.
 2.  **Clone your fork** locally:
     ```bash
-    git clone https://github.com/YOUR_USERNAME/oh-my-opencode-slim.git
-    cd oh-my-opencode-slim
+    git clone https://github.com/YOUR_USERNAME/firefly-swarm.git
+    cd firefly-swarm
     ```
 3.  **Install dependencies** using Bun:
     ```bash
