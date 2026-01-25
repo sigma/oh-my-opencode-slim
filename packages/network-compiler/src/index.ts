@@ -64,3 +64,25 @@ export function loadAndCompileNetwork(networkDir: string): CompileResult {
   const { manifest, agents, skills } = loadNetwork(networkDir);
   return compileNetwork(manifest, agents, skills);
 }
+
+/**
+ * Validate a network and print results to console, then exit.
+ * Designed for use in CLI entry points.
+ *
+ * @param networkDir - Path to the network directory
+ */
+export function validateNetworkCLI(networkDir: string): void {
+  const result = loadAndCompileNetwork(networkDir);
+  if (result.success) {
+    console.log("✓ Network is valid");
+    console.log(`  Agents: ${result.network.agents.size}`);
+    console.log(`  Skills: ${result.network.skills.size}`);
+    process.exit(0);
+  } else {
+    console.error("✗ Network has errors:");
+    for (const error of result.errors) {
+      console.error(`  - ${error.message}`);
+    }
+    process.exit(1);
+  }
+}
