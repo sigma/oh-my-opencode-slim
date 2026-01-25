@@ -34,7 +34,7 @@ function printHelp(): void {
 Usage: bunx @firefly-swarm/installer install [PACKAGE] [OPTIONS]
 
 Arguments:
-  PACKAGE                Package name to install (default: @firefly-swarm/pantheon)
+  PACKAGE                Package name to install (default: @firefly-swarm/default-network)
 
 Options:
   --antigravity=yes|no   Antigravity subscription (yes/no)
@@ -45,7 +45,7 @@ Options:
 
 Examples:
   bunx @firefly-swarm/installer install
-  bunx @firefly-swarm/installer install @firefly-swarm/pantheon
+  bunx @firefly-swarm/installer install @firefly-swarm/default-network
   bunx @firefly-swarm/installer install --no-tui --antigravity=yes --openai=yes --tmux=no
 `)
 }

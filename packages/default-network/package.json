@@ -1,5 +1,5 @@
 {
-  "name": "@firefly-swarm/pantheon",
+  "name": "@firefly-swarm/default-network",
   "version": "0.1.0",
   "description": "Standard agent network for OpenCode Swarm - a curated set of AI coding agents",
   "type": "module",

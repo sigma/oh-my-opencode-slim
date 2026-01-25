@@ -12,7 +12,7 @@ import {
 } from "./providers"
 import { fetchLatestVersion } from "./system"
 
-export const PACKAGE_NAME = "@firefly-swarm/pantheon"
+export const PACKAGE_NAME = "@firefly-swarm/default-network"
 
 /**
  * Strip JSON comments (single-line // and multi-line) and trailing commas for JSONC support.

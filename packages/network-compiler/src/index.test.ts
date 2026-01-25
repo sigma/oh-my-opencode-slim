@@ -11,8 +11,8 @@ import {
   detectCycles,
 } from "./index";
 
-// Path to the test network (in packages/pantheon/network)
-const NETWORK_DIR = resolve(import.meta.dir, "../../pantheon/network");
+// Path to the test network (in packages/default-network/network)
+const NETWORK_DIR = resolve(import.meta.dir, "../../default-network/network");
 
 describe("Network Loader", () => {
   test("loads manifest correctly", () => {

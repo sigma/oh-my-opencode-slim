@@ -15,7 +15,7 @@ mock.module("../../installer/src/system", () => ({
 
 // Now import after mocking
 import { install } from "../../installer/src/install";
-import PantheonPlugin from "../../pantheon/index";
+import DefaultNetworkPlugin from "../../default-network/index";
 
 describe("E2E: install and load", () => {
   let tempDir: string;
@@ -47,7 +47,7 @@ describe("E2E: install and load", () => {
   test("should install and load successfully", async () => {
     // 1. Install
     const exitCode = await install({
-      packageName: "@firefly-swarm/pantheon",
+      packageName: "@firefly-swarm/default-network",
       tui: false,
       antigravity: "no",
       openai: "no",
@@ -56,12 +56,12 @@ describe("E2E: install and load", () => {
 
     expect(exitCode).toBe(0);
 
-    // Verify firefly-swarm-pantheon.json exists
-    const liteConfigPath = path.join(opencodeDir, "firefly-swarm-pantheon.json");
+    // Verify firefly-swarm-default-network.json exists
+    const liteConfigPath = path.join(opencodeDir, "firefly-swarm-default-network.json");
     expect(fs.existsSync(liteConfigPath)).toBe(true);
 
     // 2. Load
-    const plugin = (await PantheonPlugin({
+    const plugin = (await DefaultNetworkPlugin({
       client: {
         session: {
           get: async () => ({ data: { id: "test", directory: process.cwd() } }),
@@ -79,7 +79,7 @@ describe("E2E: install and load", () => {
     })) as any;
 
     // 3. Assertions
-    expect(plugin.name).toBe("@firefly-swarm/pantheon");
+    expect(plugin.name).toBe("@firefly-swarm/default-network");
     
     // Check agents
     expect(plugin.agent).toBeDefined();

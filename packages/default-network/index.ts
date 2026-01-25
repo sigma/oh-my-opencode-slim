@@ -1,11 +1,11 @@
 /**
- * @firefly-swarm/pantheon
+ * @firefly-swarm/default-network
  *
  * Standard agent network for OpenCode Swarm.
  * This package provides a curated set of AI coding agents defined declaratively in Markdown.
  *
  * Usage:
- *   bunx @firefly-swarm/installer install @firefly-swarm/pantheon
+ *   bunx @firefly-swarm/installer install @firefly-swarm/default-network
  */
 
 import { join } from "path";
@@ -22,18 +22,18 @@ export const NETWORK_DIR = join(import.meta.dir, "network");
 export type { CompileResult, CompiledNetwork } from "@firefly-swarm/network-compiler";
 
 /**
- * Pantheon Plugin
+ * Default Network Plugin
  * 
- * Functional plugin that provides the curated Pantheon agent network.
+ * Functional plugin that provides the curated default agent network.
  */
-const pantheonPlugin: Plugin = createNetworkPlugin(
+const defaultNetworkPlugin: Plugin = createNetworkPlugin(
   NETWORK_DIR,
-  "@firefly-swarm/pantheon",
-  "firefly-swarm-pantheon.json"
+  "@firefly-swarm/default-network",
+  "firefly-swarm-default-network.json"
 );
 
 // Export as default
-export default pantheonPlugin;
+export default defaultNetworkPlugin;
 
 // CLI validation when run directly
 if (import.meta.main) {
