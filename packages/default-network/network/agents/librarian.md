@@ -20,7 +20,10 @@ delegationHints:
   - official examples or usage guidance
   - library-specific best practices
   - dependency version caveats
-defaultModel: google/gemini-3-flash
+models:
+  - google/gemini-2.0-flash
+  - openai/gpt-4o-mini
+  - opencode/big-pickle
 defaultTemperature: 0.1
 ---
 

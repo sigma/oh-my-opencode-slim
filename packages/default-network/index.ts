@@ -9,7 +9,7 @@
  */
 
 import { join } from "path";
-import { validateNetworkCLI } from "@firefly-swarm/network-compiler";
+import { validateNetworkCLI, loadAndCompileNetwork } from "@firefly-swarm/network-compiler";
 import { createNetworkPlugin } from "@firefly-swarm/core";
 import type { Plugin } from "@opencode-ai/plugin";
 
@@ -20,6 +20,17 @@ const NETWORK_DIR = join(import.meta.dir, "network");
 
 // Re-export types for convenience
 export type { CompileResult, CompiledNetwork } from "@firefly-swarm/network-compiler";
+
+/**
+ * Loads and compiles the default network.
+ */
+export function getNetwork() {
+  const result = loadAndCompileNetwork(NETWORK_DIR);
+  if (!result.success) {
+    throw new Error(`Failed to compile default network: ${JSON.stringify(result.errors)}`);
+  }
+  return result.network;
+}
 
 /**
  * Default Network Plugin

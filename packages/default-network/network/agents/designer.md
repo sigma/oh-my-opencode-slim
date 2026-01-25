@@ -23,7 +23,10 @@ delegationHints:
   - thoughtful component layouts
   - animation or transition storyboarding
   - intentional typography/color direction
-defaultModel: google/gemini-3-flash
+models:
+  - google/claude-opus-4-5-thinking
+  - openai/gpt-5.2-codex
+  - opencode/big-pickle
 defaultTemperature: 0.7
 ---
 

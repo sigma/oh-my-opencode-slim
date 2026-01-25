@@ -81,7 +81,8 @@ export const AgentFrontMatterSchema = z.object({
 
   // Runtime Configuration
   variant: ModelVariantSchema.optional().describe("Model tier for this agent"),
-  defaultModel: z.string().describe("Default model identifier"),
+  models: z.array(z.string()).default([]).describe("List of supported models for this agent"),
+  defaultModel: z.string().optional().describe("Default model identifier"),
   defaultTemperature: z.number().min(0).max(2).default(0.1),
 
   // Prompt Generation Metadata
@@ -90,6 +91,15 @@ export const AgentFrontMatterSchema = z.object({
   triggers: z.array(z.string()).default([]).describe("Keywords that trigger this agent"),
   delegationHints: z.array(z.string()).default([]).describe("When to delegate to this agent"),
   delegationNote: z.string().optional().describe("Special note for the agent's delegation blurb"),
+}).transform((data) => {
+  // If defaultModel is missing but models is present, use first model as default
+  if (!data.defaultModel && data.models.length > 0) {
+    return {
+      ...data,
+      defaultModel: data.models[0],
+    };
+  }
+  return data;
 });
 
 export type AgentFrontMatter = z.infer<typeof AgentFrontMatterSchema>;

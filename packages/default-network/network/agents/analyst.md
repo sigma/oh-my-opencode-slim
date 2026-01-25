@@ -26,7 +26,10 @@ delegationHints:
   - ensuring coding standards compliance
   - identifying potential bugs or issues
   - pre-merge code review
-defaultModel: google/gemini-3-flash
+models:
+  - google/gemini-2.0-flash
+  - openai/gpt-4o-mini
+  - opencode/big-pickle
 defaultTemperature: 0.1
 ---
 

@@ -5,7 +5,6 @@
     "": {
       "name": "@firefly-swarm/monorepo",
       "dependencies": {
-        "@firefly-swarm/agents": "workspace:*",
         "@firefly-swarm/core": "workspace:*",
         "@firefly-swarm/hooks": "workspace:*",
         "@firefly-swarm/installer": "workspace:*",
@@ -30,25 +29,10 @@
         "typescript": "^5.7.3",
       },
     },
-    "packages/agents": {
-      "name": "@firefly-swarm/agents",
-      "version": "0.0.1",
-      "dependencies": {
-        "@firefly-swarm/shared": "workspace:*",
-      },
-      "devDependencies": {
-        "@opencode-ai/sdk": "^1.1.19",
-        "typescript": "^5.8.3",
-      },
-      "peerDependencies": {
-        "@opencode-ai/sdk": ">=0.0.1",
-      },
-    },
     "packages/core": {
       "name": "@firefly-swarm/core",
       "version": "0.0.1",
       "dependencies": {
-        "@firefly-swarm/agents": "workspace:*",
         "@firefly-swarm/hooks": "workspace:*",
         "@firefly-swarm/mcp-integrations": "workspace:*",
         "@firefly-swarm/multiplexer": "workspace:*",
@@ -67,6 +51,19 @@
       },
       "peerDependencies": {
         "@opencode-ai/plugin": ">=1.0.0",
+      },
+    },
+    "packages/default-network": {
+      "name": "@firefly-swarm/default-network",
+      "version": "0.1.0",
+      "dependencies": {
+        "@firefly-swarm/core": "workspace:*",
+        "@firefly-swarm/network-compiler": "workspace:*",
+      },
+      "devDependencies": {
+        "@opencode-ai/plugin": "^1.1.19",
+        "bun-types": "latest",
+        "typescript": "^5.7.3",
       },
     },
     "packages/design-system": {
@@ -98,6 +95,7 @@
         "opencode-swarm": "./src/index.ts",
       },
       "dependencies": {
+        "@firefly-swarm/default-network": "workspace:*",
         "@firefly-swarm/network-compiler": "workspace:*",
         "@firefly-swarm/shared": "workspace:*",
         "@firefly-swarm/tool-skills": "workspace:*",
@@ -147,20 +145,6 @@
       "optionalPeers": [
         "@opencode-ai/sdk",
       ],
-    },
-    "packages/pantheon": {
-      "name": "@firefly-swarm/pantheon",
-      "version": "0.1.0",
-      "dependencies": {
-        "@firefly-swarm/agents": "workspace:*",
-        "@firefly-swarm/core": "workspace:*",
-        "@firefly-swarm/network-compiler": "workspace:*",
-      },
-      "devDependencies": {
-        "@opencode-ai/plugin": "^1.1.19",
-        "bun-types": "latest",
-        "typescript": "^5.7.3",
-      },
     },
     "packages/shared": {
       "name": "@firefly-swarm/shared",
@@ -276,9 +260,9 @@
 
     "@ast-grep/cli-win32-x64-msvc": ["@ast-grep/cli-win32-x64-msvc@0.40.5", "", { "os": "win32", "cpu": "x64" }, "sha512-/MJ5un7yxlClaaxou9eYl+Kr2xr/yTtYtTq5aLBWjPWA6dmmJ1nAJgx5zKHVuplFXFBrFDQk3paEgAETMTGcrA=="],
 
-    "@firefly-swarm/agents": ["@firefly-swarm/agents@workspace:packages/agents"],
-
     "@firefly-swarm/core": ["@firefly-swarm/core@workspace:packages/core"],
+
+    "@firefly-swarm/default-network": ["@firefly-swarm/default-network@workspace:packages/default-network"],
 
     "@firefly-swarm/design-system": ["@firefly-swarm/design-system@workspace:packages/design-system"],
 
@@ -291,8 +275,6 @@
     "@firefly-swarm/multiplexer": ["@firefly-swarm/multiplexer@workspace:packages/multiplexer"],
 
     "@firefly-swarm/network-compiler": ["@firefly-swarm/network-compiler@workspace:packages/network-compiler"],
-
-    "@firefly-swarm/pantheon": ["@firefly-swarm/pantheon@workspace:packages/pantheon"],
 
     "@firefly-swarm/shared": ["@firefly-swarm/shared@workspace:packages/shared"],
 

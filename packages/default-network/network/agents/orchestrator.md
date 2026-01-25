@@ -15,7 +15,10 @@ capabilities:
 constraints:
 triggers:
 delegationHints:
-defaultModel: google/claude-opus-4-5-thinking
+models:
+  - google/claude-opus-4-5-thinking
+  - openai/gpt-5.2-codex
+  - opencode/big-pickle
 defaultTemperature: 0.1
 ---
 

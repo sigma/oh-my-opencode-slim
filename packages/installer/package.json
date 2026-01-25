@@ -18,6 +18,7 @@
     "build": "bun build ./src/index.ts --outdir ./dist --format esm"
   },
   "dependencies": {
+    "@firefly-swarm/default-network": "workspace:*",
     "@firefly-swarm/network-compiler": "workspace:*",
     "@firefly-swarm/shared": "workspace:*",
     "@firefly-swarm/tool-skills": "workspace:*"

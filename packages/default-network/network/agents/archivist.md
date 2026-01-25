@@ -25,7 +25,10 @@ delegationHints:
   - organizing changes into logical commits
   - writing descriptive commit messages
   - checking version control status
-defaultModel: google/gemini-3-flash
+models:
+  - google/gemini-2.0-flash
+  - openai/gpt-4o-mini
+  - opencode/big-pickle
 defaultTemperature: 0.1
 ---
 

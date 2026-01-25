@@ -23,7 +23,10 @@ delegationHints:
   - debugging guidance for complex issues
   - verification of long-term reliability or safety
   - risky refactors assessed
-defaultModel: openai/gpt-5.2-codex
+models:
+  - google/claude-opus-4-5-thinking
+  - openai/gpt-5.2-codex
+  - opencode/big-pickle
 defaultTemperature: 0.1
 ---
 

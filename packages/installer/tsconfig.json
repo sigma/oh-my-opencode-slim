@@ -7,7 +7,14 @@
     "paths": {
       "@firefly-swarm/shared": ["../shared/src/index.ts"],
       "@firefly-swarm/network-compiler": ["../network-compiler/src/index.ts"],
-      "@firefly-swarm/tool-skills": ["../tool-skills/src/index.ts"]
+      "@firefly-swarm/tool-skills": ["../tool-skills/src/index.ts"],
+      "@firefly-swarm/default-network": ["../default-network/index.ts"],
+      "@firefly-swarm/core": ["../core/src/index.ts"],
+      "@firefly-swarm/tool-background": ["../tool-background/src/index.ts"],
+      "@firefly-swarm/multiplexer": ["../multiplexer/src/index.ts"],
+      "@firefly-swarm/tool-lsp": ["../tool-lsp/src/index.ts"],
+      "@firefly-swarm/mcp-integrations": ["../mcp-integrations/src/index.ts"],
+      "@firefly-swarm/hooks": ["../hooks/src/index.ts"]
     },
     "strict": true,
     "skipLibCheck": true,

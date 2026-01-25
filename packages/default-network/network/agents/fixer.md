@@ -22,7 +22,10 @@ delegationHints:
   - feature updates once design and plan are approved
   - safe bug fixes with clear reproduction
   - implementation of pre-populated plans
-defaultModel: google/gemini-3-flash
+models:
+  - google/gemini-2.0-flash
+  - openai/gpt-4o-mini
+  - opencode/big-pickle
 defaultTemperature: 0.2
 ---
 

@@ -26,7 +26,10 @@ delegationHints:
   - improving test coverage
   - identifying untested edge cases
   - setting up test infrastructure
-defaultModel: google/gemini-3-flash
+models:
+  - google/gemini-2.0-flash
+  - openai/gpt-4o-mini
+  - opencode/big-pickle
 defaultTemperature: 0.2
 ---
 
