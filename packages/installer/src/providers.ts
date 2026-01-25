@@ -44,6 +44,8 @@ export function generateLiteConfig(installConfig: InstallConfig): Record<string,
   const providerSpecs = [
     { id: "antigravity", prefixes: ["google/", "anthropic/", "mistral/"] },
     { id: "openai", prefixes: ["openai/"] },
+    { id: "zai", prefixes: ["zai-coding-plan/"] },
+    { id: "copilot", prefixes: ["github/"] },
     { id: "zen", prefixes: ["opencode/"] },
   ]
 
@@ -67,6 +69,10 @@ export function generateLiteConfig(installConfig: InstallConfig): Record<string,
     basePreset = "antigravity"
   } else if (installConfig.hasOpenAI) {
     basePreset = "openai"
+  } else if (installConfig.hasZai) {
+    basePreset = "zai"
+  } else if (installConfig.hasCopilot) {
+    basePreset = "copilot"
   }
 
   const config: Record<string, any> = {

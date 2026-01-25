@@ -128,6 +128,8 @@ function formatConfigSummary(config: InstallConfig): string {
   lines.push(`  ${BOLD}Preset:${RESET} ${BLUE}${preset}${RESET}`)
   lines.push(`  ${config.hasAntigravity ? SYMBOLS.check : DIM + "○" + RESET} Antigravity`)
   lines.push(`  ${config.hasOpenAI ? SYMBOLS.check : DIM + "○" + RESET} OpenAI`)
+  lines.push(`  ${config.hasZai ? SYMBOLS.check : DIM + "○" + RESET} Z.ai`)
+  lines.push(`  ${config.hasCopilot ? SYMBOLS.check : DIM + "○" + RESET} GitHub Copilot`)
   lines.push(`  ${SYMBOLS.check} Opencode Zen (free models)`) // Always enabled
   lines.push(`  ${config.hasTmux ? SYMBOLS.check : DIM + "○" + RESET} Tmux Integration`)
   return lines.join("\n")
@@ -158,6 +160,8 @@ function argsToConfig(args: InstallArgs): InstallConfig {
   return {
     hasAntigravity: args.antigravity === "yes",
     hasOpenAI: args.openai === "yes",
+    hasZai: args.zai === "yes",
+    hasCopilot: args.copilot === "yes",
     hasOpencodeZen: true, // Always enabled - free models available to all users
     hasTmux: args.tmux === "yes",
     packageName: args.packageName,
@@ -183,7 +187,7 @@ async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): 
   // TODO: tmux has a bug, disabled for now
   // const tmuxInstalled = await isTmuxInstalled()
   // const totalQuestions = tmuxInstalled ? 3 : 2
-  const totalQuestions = 2
+  const totalQuestions = 4
 
   try {
     console.log(`${BOLD}Question 1/${totalQuestions}:${RESET}`)
@@ -193,6 +197,14 @@ async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): 
 
     console.log(`${BOLD}Question 2/${totalQuestions}:${RESET}`)
     const openai = await askYesNo(rl, "Do you have access to OpenAI API?", detected.hasOpenAI ? "yes" : "no")
+    console.log()
+
+    console.log(`${BOLD}Question 3/${totalQuestions}:${RESET}`)
+    const zai = await askYesNo(rl, "Do you have a Z.ai subscription?", detected.hasZai ? "yes" : "no")
+    console.log()
+
+    console.log(`${BOLD}Question 4/${totalQuestions}:${RESET}`)
+    const copilot = await askYesNo(rl, "Do you have access to GitHub Copilot?", detected.hasCopilot ? "yes" : "no")
     console.log()
 
     // TODO: tmux has a bug, disabled for now
@@ -208,6 +220,8 @@ async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): 
     return {
       hasAntigravity: antigravity === "yes",
       hasOpenAI: openai === "yes",
+      hasZai: zai === "yes",
+      hasCopilot: copilot === "yes",
       hasOpencodeZen: true,
       hasTmux: false,
       packageName: args.packageName,
@@ -266,7 +280,7 @@ async function runInstall(config: InstallConfig): Promise<number> {
 
   printAgentModels(config)
 
-  if (!config.hasAntigravity && !config.hasOpenAI) {
+  if (!config.hasAntigravity && !config.hasOpenAI && !config.hasZai && !config.hasCopilot) {
     printWarning("No providers configured. Zen free models will be used as fallback.")
   }
 
@@ -299,7 +313,7 @@ export async function install(args: InstallArgs): Promise<number> {
 
   // Non-interactive mode: all args must be provided
   if (!args.tui) {
-    const requiredArgs = ["antigravity", "openai", "tmux"] as const
+    const requiredArgs = ["antigravity", "openai", "zai", "copilot", "tmux"] as const
     const errors = requiredArgs.filter((key) => {
       const value = args[key]
       return value === undefined || !["yes", "no"].includes(value)
@@ -312,7 +326,7 @@ export async function install(args: InstallArgs): Promise<number> {
         console.log(`  ${SYMBOLS.bullet} --${key}=<yes|no>`)
       }
       console.log()
-      printInfo(`Usage: bunx @firefly-swarm/installer install ${pkgName} --no-tui --antigravity=<yes|no> --openai=<yes|no> --tmux=<yes|no>`)
+      printInfo(`Usage: bunx @firefly-swarm/installer install ${pkgName} --no-tui --antigravity=<yes|no> --openai=<yes|no> --zai=<yes|no> --copilot=<yes|no> --tmux=<yes|no>`)
       console.log()
       return 1
     }

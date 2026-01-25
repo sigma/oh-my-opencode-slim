@@ -245,6 +245,8 @@ export function detectCurrentConfig(): DetectedConfig {
     isInstalled: false,
     hasAntigravity: false,
     hasOpenAI: false,
+    hasZai: false,
+    hasCopilot: false,
     hasOpencodeZen: false,
     hasTmux: false,
   }
@@ -269,6 +271,8 @@ export function detectCurrentConfig(): DetectedConfig {
         .map((a) => a?.model)
         .filter(Boolean)
       result.hasOpenAI = models.some((m) => m?.startsWith("openai/"))
+      result.hasZai = models.some((m) => m?.startsWith("zai-coding-plan/"))
+      result.hasCopilot = models.some((m) => m?.startsWith("github/"))
       result.hasOpencodeZen = models.some((m) => m?.startsWith("opencode/"))
     }
 
