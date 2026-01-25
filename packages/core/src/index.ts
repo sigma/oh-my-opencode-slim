@@ -19,6 +19,7 @@ import {
   createPostReadNudgeHook 
 } from "@firefly-swarm/hooks";
 import { log, type TmuxConfig } from "@firefly-swarm/shared";
+import { loadAndCompileNetwork } from "@firefly-swarm/network-compiler";
 import { loadPluginConfig } from "./loader";
 
 export const createPlugin = (
@@ -140,6 +141,69 @@ export const createPlugin = (
 };
 
 export default createPlugin;
+
+/**
+ * Create a plugin from a network definition directory.
+ * 
+ * @param networkDir Path to the directory containing network definition
+ * @param pluginName Plugin name
+ * @param configFilename Configuration filename
+ * @returns Plugin function
+ */
+export const createNetworkPlugin = (
+  networkDir: string,
+  pluginName: string,
+  configFilename: string
+): Plugin => {
+  // Load and compile network
+  const result = loadAndCompileNetwork(networkDir);
+  if (!result.success) {
+    const errorMessages = result.errors.map((e: { message: string }) => e.message).join("\n");
+    throw new Error(`Failed to compile network from ${networkDir}:\n${errorMessages}`);
+  }
+  
+  const network = result.network;
+  
+  // Map network agents to OpenCode SDK agent configurations
+  const agents: Record<string, any> = {};
+  for (const [name, agent] of network.agents) {
+    agents[name] = {
+      description: agent.frontMatter.description,
+      model: agent.frontMatter.defaultModel,
+      temperature: agent.frontMatter.defaultTemperature,
+      prompt: agent.content,
+      mode: agent.frontMatter.primary ? "primary" : "subagent",
+    };
+  }
+
+  // Create base plugin
+  const basePlugin = createPlugin(agents, configFilename, pluginName);
+
+  // Return wrapped plugin that injects skills
+  return async (ctx: PluginInput) => {
+    const instance = await basePlugin(ctx);
+    const originalConfig = instance.config;
+
+    instance.config = async (opencodeConfig: Record<string, any>) => {
+      // Run base config hook first
+      if (originalConfig) {
+        await originalConfig(opencodeConfig);
+      }
+
+      // Inject skills into the agents in the config
+      const configAgents = (opencodeConfig.agent || opencodeConfig.agents) as Record<string, any> | undefined;
+      if (configAgents) {
+        for (const [name, agent] of network.agents) {
+          if (configAgents[name]) {
+            configAgents[name].skills = agent.frontMatter.skills;
+          }
+        }
+      }
+    };
+
+    return instance;
+  };
+};
 
 export type { PluginConfig, AgentOverrideConfig, AgentName, McpName, TmuxConfig, TmuxLayout } from "@firefly-swarm/shared";
 export type { RemoteMcpConfig } from "@firefly-swarm/mcp-integrations";

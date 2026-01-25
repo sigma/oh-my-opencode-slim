@@ -12,13 +12,14 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "bun build ./src/index.ts --outdir ./dist --format esm"
+    "build": "bun build ./src/index.ts --outdir ./dist --format esm --target bun"
   },
   "dependencies": {
     "@firefly-swarm/agents": "workspace:*",
     "@firefly-swarm/hooks": "workspace:*",
     "@firefly-swarm/mcp-integrations": "workspace:*",
     "@firefly-swarm/multiplexer": "workspace:*",
+    "@firefly-swarm/network-compiler": "workspace:*",
     "@firefly-swarm/shared": "workspace:*",
     "@firefly-swarm/tool-ast-grep": "workspace:*",
     "@firefly-swarm/tool-background": "workspace:*",

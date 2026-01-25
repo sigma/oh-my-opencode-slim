@@ -10,7 +10,7 @@
 
 import { join } from "path";
 import { loadAndCompileNetwork, type CompileResult, type CompiledNetwork } from "@firefly-swarm/network-compiler";
-import { createPlugin } from "@firefly-swarm/core";
+import { createNetworkPlugin } from "@firefly-swarm/core";
 import type { Plugin } from "@opencode-ai/plugin";
 
 /**
@@ -54,58 +54,16 @@ export function isValid(): boolean {
 // Re-export types for convenience
 export type { CompileResult, CompiledNetwork } from "@firefly-swarm/network-compiler";
 
-// Load network for plugin conversion
-const network = getNetwork();
-
-// Map network agents to OpenCode SDK agent configurations
-// We map them to the format expected by the OpenCode SDK (flat config)
-const agents: Record<string, any> = {};
-
-for (const [name, agent] of network.agents) {
-  agents[name] = {
-    description: agent.frontMatter.description,
-    model: agent.frontMatter.defaultModel,
-    temperature: agent.frontMatter.defaultTemperature,
-    prompt: agent.content,
-    mode: agent.frontMatter.primary ? "primary" : "subagent",
-  };
-}
-
-/**
- * Create the base plugin with custom agents
- */
-const basePlugin = createPlugin(agents, "firefly-swarm-pantheon.json", "@firefly-swarm/pantheon");
-
 /**
  * Pantheon Plugin
  * 
  * Functional plugin that provides the curated Pantheon agent network.
  */
-const pantheonPlugin: Plugin = async (ctx) => {
-  const instance = await basePlugin(ctx);
-  const originalConfig = instance.config;
-
-  // Override the config hook to inject skills based on the network definition
-  instance.config = async (opencodeConfig: Record<string, any>) => {
-    // Run base config hook first (merges agents, sets defaults)
-    if (originalConfig) {
-      await originalConfig(opencodeConfig);
-    }
-
-    // Inject skills into the agents in the config
-    // We check both 'agent' and 'agents' for compatibility
-    const configAgents = (opencodeConfig.agent || opencodeConfig.agents) as Record<string, any> | undefined;
-    if (configAgents) {
-      for (const [name, agent] of network.agents) {
-        if (configAgents[name]) {
-          configAgents[name].skills = agent.frontMatter.skills;
-        }
-      }
-    }
-  };
-
-  return instance;
-};
+const pantheonPlugin: Plugin = createNetworkPlugin(
+  NETWORK_DIR,
+  "@firefly-swarm/pantheon",
+  "firefly-swarm-pantheon.json"
+);
 
 // Export as default
 export default pantheonPlugin;

@@ -52,6 +52,7 @@
         "@firefly-swarm/hooks": "workspace:*",
         "@firefly-swarm/mcp-integrations": "workspace:*",
         "@firefly-swarm/multiplexer": "workspace:*",
+        "@firefly-swarm/network-compiler": "workspace:*",
         "@firefly-swarm/shared": "workspace:*",
         "@firefly-swarm/tool-ast-grep": "workspace:*",
         "@firefly-swarm/tool-background": "workspace:*",
