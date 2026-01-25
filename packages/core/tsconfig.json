@@ -6,7 +6,6 @@
     "baseUrl": ".",
     "paths": {
       "@firefly-swarm/shared": ["../shared/src/index.ts"],
-      "@firefly-swarm/agents": ["../agents/src/index.ts"],
       "@firefly-swarm/hooks": ["../hooks/src/index.ts"],
       "@firefly-swarm/mcp-integrations": ["../mcp-integrations/src/index.ts"],
       "@firefly-swarm/multiplexer": ["../multiplexer/src/index.ts"],
@@ -23,5 +22,5 @@
     "declaration": true,
     "outDir": "./dist"
   },
-  "include": ["src/**/*", "../agents/roles/roles.d.ts"]
+  "include": ["src/**/*"]
 }

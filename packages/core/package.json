@@ -15,7 +15,6 @@
     "build": "bun build ./src/index.ts --outdir ./dist --format esm --target bun"
   },
   "dependencies": {
-    "@firefly-swarm/agents": "workspace:*",
     "@firefly-swarm/hooks": "workspace:*",
     "@firefly-swarm/mcp-integrations": "workspace:*",
     "@firefly-swarm/multiplexer": "workspace:*",

@@ -25,8 +25,7 @@
   },
   "dependencies": {
     "@firefly-swarm/network-compiler": "workspace:*",
-    "@firefly-swarm/core": "workspace:*",
-    "@firefly-swarm/agents": "workspace:*"
+    "@firefly-swarm/core": "workspace:*"
   },
   "devDependencies": {
     "bun-types": "latest",

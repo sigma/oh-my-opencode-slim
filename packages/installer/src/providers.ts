@@ -1,7 +1,11 @@
 import { join } from "path"
 import type { InstallConfig } from "./types"
-import { DEFAULT_AGENT_SKILLS } from "@firefly-swarm/tool-skills"
 import { loadAndCompileNetwork } from "@firefly-swarm/network-compiler"
+
+const DEFAULT_AGENT_SKILLS: Record<string, string[]> = {
+  orchestrator: ["*"],
+  designer: ["playwright"],
+};
 
 /**
  * Provider configurations for Google models (via Antigravity auth plugin)

@@ -1,5 +1,4 @@
 import type { Plugin, PluginInput } from "@opencode-ai/plugin";
-import { getAgentConfigs } from "@firefly-swarm/agents";
 import { BackgroundTaskManager, createBackgroundTools } from "@firefly-swarm/tool-background";
 import { MultiplexerManager, createTmuxProvider, startTmuxCheck } from "@firefly-swarm/multiplexer";
 import { 
@@ -44,8 +43,6 @@ export const createPlugin = (
         agent.permission = { ...agent.permission, question: "allow" };
       }
     }
-  } else {
-    agents = getAgentConfigs(config);
   }
 
   // Set default agent in config for tools and hooks

@@ -44,7 +44,6 @@
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@opencode-ai/plugin": "^1.1.19",
     "@opencode-ai/sdk": "^1.1.19",
-    "@firefly-swarm/agents": "workspace:*",
     "@firefly-swarm/core": "workspace:*",
     "@firefly-swarm/hooks": "workspace:*",
     "@firefly-swarm/installer": "workspace:*",

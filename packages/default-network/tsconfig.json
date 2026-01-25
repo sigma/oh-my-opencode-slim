@@ -15,7 +15,6 @@
     "paths": {
       "@firefly-swarm/network-compiler": ["../network-compiler/src/index.ts"],
       "@firefly-swarm/core": ["../core/src/index.ts"],
-      "@firefly-swarm/agents": ["../agents/src/index.ts"],
       "@firefly-swarm/shared": ["../shared/src/index.ts"],
       "@firefly-swarm/hooks": ["../hooks/src/index.ts"],
       "@firefly-swarm/mcp-integrations": ["../mcp-integrations/src/index.ts"],
@@ -28,6 +27,6 @@
       "@firefly-swarm/tool-skills": ["../tool-skills/src/index.ts"]
     }
   },
-  "include": ["*.ts", "../agents/roles/roles.d.ts"],
+  "include": ["*.ts"],
   "exclude": ["node_modules", "dist"]
 }
