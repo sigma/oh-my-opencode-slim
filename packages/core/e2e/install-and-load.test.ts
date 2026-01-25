@@ -54,7 +54,7 @@ describe("E2E: install and load", () => {
       openai: "no",
       zai: "no",
       copilot: "no",
-      tmux: "no",
+      multiplexer: "none",
     });
 
     expect(exitCode).toBe(0);

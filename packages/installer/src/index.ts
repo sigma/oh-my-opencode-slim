@@ -18,8 +18,8 @@ function parseArgs(args: string[]): InstallArgs {
       result.zai = arg.split("=")[1] as BooleanArg
     } else if (arg.startsWith("--copilot=")) {
       result.copilot = arg.split("=")[1] as BooleanArg
-    } else if (arg.startsWith("--tmux=")) {
-      result.tmux = arg.split("=")[1] as BooleanArg
+    } else if (arg.startsWith("--multiplexer=")) {
+      result.multiplexer = arg.split("=")[1] as BooleanArg
     } else if (arg === "-h" || arg === "--help") {
       printHelp()
       process.exit(0)
@@ -45,14 +45,14 @@ Options:
   --openai=yes|no        OpenAI API access (yes/no)
   --zai=yes|no           Z.ai subscription (yes/no)
   --copilot=yes|no       GitHub Copilot access (yes/no)
-  --tmux=yes|no          Enable tmux integration (yes/no)
+  --multiplexer=yes|no   Enable multiplexer integration (Tmux/WezTerm)
   --no-tui               Non-interactive mode (requires all flags)
   -h, --help             Show this help message
 
 Examples:
   bunx @firefly-swarm/installer install
   bunx @firefly-swarm/installer install @firefly-swarm/default-network
-  bunx @firefly-swarm/installer install --no-tui --antigravity=yes --openai=yes --zai=no --copilot=no --tmux=no
+  bunx @firefly-swarm/installer install --no-tui --antigravity=yes --openai=yes --zai=no --copilot=no --multiplexer=no
 `)
 }
 

@@ -6,7 +6,7 @@ export interface InstallArgs {
   openai?: BooleanArg
   zai?: BooleanArg
   copilot?: BooleanArg
-  tmux?: BooleanArg
+  multiplexer?: string
   packageName?: string
 }
 
@@ -23,7 +23,7 @@ export interface InstallConfig {
   hasZai: boolean
   hasCopilot: boolean
   hasOpencodeZen: boolean
-  hasTmux: boolean
+  multiplexerProvider: string
   packageName?: string
 }
 
@@ -40,5 +40,5 @@ export interface DetectedConfig {
   hasZai: boolean
   hasCopilot: boolean
   hasOpencodeZen: boolean
-  hasTmux: boolean
+  multiplexerProvider: string
 }

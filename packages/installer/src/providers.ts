@@ -80,9 +80,10 @@ export function generateLiteConfig(installConfig: InstallConfig): Record<string,
     presets,
   }
 
-  if (installConfig.hasTmux) {
-    config.tmux = {
+  if (installConfig.multiplexerProvider && installConfig.multiplexerProvider !== "none") {
+    config.multiplexer = {
       enabled: true,
+      provider: installConfig.multiplexerProvider,
       layout: "main-vertical",
       main_pane_size: 60,
     }

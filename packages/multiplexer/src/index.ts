@@ -1,7 +1,10 @@
 // Types
 export * from "./types";
 
-// Provider
+// Factory
+export { getMultiplexerProvider } from "./factory";
+
+// Providers
 export { 
   TmuxProvider,
   createTmuxProvider,
@@ -12,6 +15,13 @@ export {
   startTmuxCheck,
   resetServerCheck,
 } from "./providers/tmux";
+
+export {
+  WeztermProvider,
+  createWeztermProvider,
+  isInsideWezterm,
+  getWeztermPath,
+} from "./providers/wezterm";
 
 // Manager
 export {

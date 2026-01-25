@@ -131,7 +131,7 @@ function formatConfigSummary(config: InstallConfig): string {
   lines.push(`  ${config.hasZai ? SYMBOLS.check : DIM + "○" + RESET} Z.ai`)
   lines.push(`  ${config.hasCopilot ? SYMBOLS.check : DIM + "○" + RESET} GitHub Copilot`)
   lines.push(`  ${SYMBOLS.check} Opencode Zen (free models)`) // Always enabled
-  lines.push(`  ${config.hasTmux ? SYMBOLS.check : DIM + "○" + RESET} Tmux Integration`)
+  lines.push(`  ${config.multiplexerProvider !== "none" ? SYMBOLS.check : DIM + "○" + RESET} Multiplexer Integration (${config.multiplexerProvider})`)
   return lines.join("\n")
 }
 
@@ -163,7 +163,7 @@ function argsToConfig(args: InstallArgs): InstallConfig {
     hasZai: args.zai === "yes",
     hasCopilot: args.copilot === "yes",
     hasOpencodeZen: true, // Always enabled - free models available to all users
-    hasTmux: args.tmux === "yes",
+    multiplexerProvider: (args.multiplexer as string) || "none",
     packageName: args.packageName,
   }
 }
@@ -184,9 +184,8 @@ async function askYesNo(
 
 async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): Promise<InstallConfig> {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-  // TODO: tmux has a bug, disabled for now
-  // const tmuxInstalled = await isTmuxInstalled()
-  // const totalQuestions = tmuxInstalled ? 3 : 2
+  // TODO: multiplexer disabled for now in interactive mode until stabilized
+  // const totalQuestions = 4
   const totalQuestions = 4
 
   try {
@@ -207,13 +206,13 @@ async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): 
     const copilot = await askYesNo(rl, "Do you have access to GitHub Copilot?", detected.hasCopilot ? "yes" : "no")
     console.log()
 
-    // TODO: tmux has a bug, disabled for now
-    // let tmux: BooleanArg = "no"
-    // if (tmuxInstalled) {
+    // TODO: multiplexer disabled for now in interactive mode until stabilized
+    // let multiplexer: BooleanArg = "no"
+    // if (true) {
     //   console.log(`${BOLD}Question 3/3:${RESET}`)
-    //   printInfo(`${BOLD}Tmux detected!${RESET} We can enable tmux integration for you.`)
+    //   printInfo(`${BOLD}Multiplexer detected!${RESET} We can enable integration for you.`)
     //   printInfo("This will spawn new panes for sub-agents, letting you watch them work in real-time.")
-    //   tmux = await askYesNo(rl, "Enable tmux integration?", detected.hasTmux ? "yes" : "no")
+    //   multiplexer = await askYesNo(rl, "Enable multiplexer integration?", detected.multiplexerEnabled ? "yes" : "no")
     //   console.log()
     // }
 
@@ -223,7 +222,7 @@ async function runInteractiveMode(detected: DetectedConfig, args: InstallArgs): 
       hasZai: zai === "yes",
       hasCopilot: copilot === "yes",
       hasOpencodeZen: true,
-      hasTmux: false,
+      multiplexerProvider: "none",
       packageName: args.packageName,
     }
   } finally {
@@ -294,9 +293,9 @@ async function runInstall(config: InstallConfig): Promise<number> {
   console.log(`     ${BLUE}$ opencode auth login${RESET}`)
   console.log()
 
-  // TODO: tmux has a bug, disabled for now
-  // if (config.hasTmux) {
-  //   console.log(`  ${nextStep++}. Run OpenCode inside tmux:`)
+  // TODO: multiplexer has a bug, disabled for now
+  // if (config.multiplexerEnabled) {
+  //   console.log(`  ${nextStep++}. Run OpenCode inside a multiplexer (e.g. tmux):`)
   //   console.log(`     ${BLUE}$ tmux${RESET}`)
   //   console.log(`     ${BLUE}$ opencode${RESET}`)
   // } else {
@@ -313,20 +312,30 @@ export async function install(args: InstallArgs): Promise<number> {
 
   // Non-interactive mode: all args must be provided
   if (!args.tui) {
-    const requiredArgs = ["antigravity", "openai", "zai", "copilot", "tmux"] as const
-    const errors = requiredArgs.filter((key) => {
+    const requiredArgs = ["antigravity", "openai", "zai", "copilot"] as const
+    const errors: string[] = requiredArgs.filter((key) => {
       const value = args[key]
       return value === undefined || !["yes", "no"].includes(value)
     })
+    
+    // Check multiplexer separately (multiplexer must be present)
+    const muxValue = args.multiplexer
+    if (muxValue === undefined) {
+        errors.push("multiplexer" as any)
+    }
 
     if (errors.length > 0) {
       printHeader(false, pkgName)
       printError("Missing or invalid arguments:")
       for (const key of errors) {
-        console.log(`  ${SYMBOLS.bullet} --${key}=<yes|no>`)
+        if (key === "multiplexer") {
+           console.log(`  ${SYMBOLS.bullet} --${key}=<auto|tmux|wezterm|none>`)
+        } else {
+           console.log(`  ${SYMBOLS.bullet} --${key}=<yes|no>`)
+        }
       }
       console.log()
-      printInfo(`Usage: bunx @firefly-swarm/installer install ${pkgName} --no-tui --antigravity=<yes|no> --openai=<yes|no> --zai=<yes|no> --copilot=<yes|no> --tmux=<yes|no>`)
+      printInfo(`Usage: bunx @firefly-swarm/installer install ${pkgName} --no-tui --antigravity=<yes|no> --openai=<yes|no> --zai=<yes|no> --copilot=<yes|no> --multiplexer=<auto|tmux|wezterm|none>`)
       console.log()
       return 1
     }

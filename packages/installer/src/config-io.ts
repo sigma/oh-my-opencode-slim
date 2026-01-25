@@ -248,7 +248,7 @@ export function detectCurrentConfig(): DetectedConfig {
     hasZai: false,
     hasCopilot: false,
     hasOpencodeZen: false,
-    hasTmux: false,
+    multiplexerProvider: "none",
   }
 
   const { config } = parseConfig(getExistingConfigPath())
@@ -276,8 +276,21 @@ export function detectCurrentConfig(): DetectedConfig {
       result.hasOpencodeZen = models.some((m) => m?.startsWith("opencode/"))
     }
 
-    if (configObj.tmux && typeof configObj.tmux === "object") {
-      result.hasTmux = configObj.tmux.enabled === true
+    if (configObj.multiplexer && typeof configObj.multiplexer === "object") {
+      if (configObj.multiplexer.provider) {
+        result.multiplexerProvider = configObj.multiplexer.provider
+      } else if (configObj.multiplexer.enabled === true) {
+        result.multiplexerProvider = "auto"
+      }
+    }
+
+    if (
+      result.multiplexerProvider === "none" &&
+      configObj.tmux &&
+      typeof configObj.tmux === "object" &&
+      configObj.tmux.enabled === true
+    ) {
+      result.multiplexerProvider = "tmux"
     }
   }
 

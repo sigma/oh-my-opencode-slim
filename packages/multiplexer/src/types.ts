@@ -1,3 +1,7 @@
+import type { MultiplexerConfig } from "@firefly-swarm/shared";
+
+export { type MultiplexerConfig };
+
 /**
  * Multiplexer provider interface for terminal multiplexers (Tmux, WezTerm, etc.)
  */
@@ -31,11 +35,4 @@ export interface SpawnOptions {
 export interface SpawnResult {
   success: boolean;
   paneId?: string;
-}
-
-/** Configuration for the multiplexer */
-export interface MultiplexerConfig {
-  enabled: boolean;
-  layout?: "main-horizontal" | "main-vertical" | "tiled" | "even-horizontal" | "even-vertical";
-  main_pane_size?: number;
 }

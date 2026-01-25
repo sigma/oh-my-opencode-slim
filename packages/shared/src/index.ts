@@ -34,12 +34,18 @@ export {
 // Schemas
 export {
   AgentOverrideConfigSchema,
+  MultiplexerProviderSchema,
+  MultiplexerLayoutSchema,
+  MultiplexerConfigSchema,
   TmuxLayoutSchema,
   TmuxConfigSchema,
   McpNameSchema,
   PresetSchema,
   PluginConfigSchema,
   type AgentOverrideConfig,
+  type MultiplexerProvider,
+  type MultiplexerLayout,
+  type MultiplexerConfig,
   type TmuxLayout,
   type TmuxConfig,
   type McpName,

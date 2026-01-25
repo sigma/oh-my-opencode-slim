@@ -1,6 +1,6 @@
 import type { Plugin, PluginInput } from "@opencode-ai/plugin";
 import { BackgroundTaskManager, createBackgroundTools } from "@firefly-swarm/tool-background";
-import { MultiplexerManager, createTmuxProvider, startTmuxCheck } from "@firefly-swarm/multiplexer";
+import { MultiplexerManager, getMultiplexerProvider, startTmuxCheck } from "@firefly-swarm/multiplexer";
 import { 
   lsp_goto_definition,
   lsp_find_references,
@@ -17,7 +17,7 @@ import {
   createPhaseReminderHook, 
   createPostReadNudgeHook 
 } from "@firefly-swarm/hooks";
-import { log, type TmuxConfig, type PluginConfig } from "@firefly-swarm/shared";
+import { log, type MultiplexerConfig, type PluginConfig } from "@firefly-swarm/shared";
 import { loadAndCompileNetwork } from "@firefly-swarm/network-compiler";
 import { loadPluginConfig } from "./loader";
 
@@ -54,26 +54,30 @@ export const createPlugin = (
   }
   (ctx as any).config = config;
 
-  // Parse tmux config with defaults
-  const tmuxConfig: TmuxConfig = {
-    enabled: config.tmux?.enabled ?? false,
-    layout: config.tmux?.layout ?? "main-vertical",
-    main_pane_size: config.tmux?.main_pane_size ?? 60,
+  // Parse multiplexer config with defaults, respecting legacy tmux key
+  const legacyTmux = config.tmux;
+  const newMultiplexer = config.multiplexer;
+  
+  const multiplexerConfig: MultiplexerConfig = {
+    enabled: newMultiplexer?.enabled ?? legacyTmux?.enabled ?? false,
+    provider: newMultiplexer?.provider ?? "auto",
+    layout: newMultiplexer?.layout ?? legacyTmux?.layout ?? "main-vertical",
+    main_pane_size: newMultiplexer?.main_pane_size ?? legacyTmux?.main_pane_size ?? 60,
   };
 
-  log("[plugin] initialized with tmux config", {
-    tmuxConfig,
-    rawTmuxConfig: config.tmux,
+  log("[plugin] initialized with multiplexer config", {
+    multiplexerConfig,
+    legacyTmux,
     directory: ctx.directory
   });
 
-  // Start background tmux check if enabled
-  if (tmuxConfig.enabled) {
+  // Start background tmux check if enabled (legacy behavior)
+  if (multiplexerConfig.enabled) {
     startTmuxCheck();
   }
 
-  const backgroundManager = new BackgroundTaskManager(ctx, tmuxConfig, config);
-  const backgroundTools = createBackgroundTools(ctx, backgroundManager, tmuxConfig, config);
+  const backgroundManager = new BackgroundTaskManager(ctx, multiplexerConfig, config);
+  const backgroundTools = createBackgroundTools(ctx, backgroundManager, multiplexerConfig, config);
 
   // Check tool prerequisites
   const isGrepAvailable = checkGrepAvailability();
@@ -91,9 +95,9 @@ export const createPlugin = (
   const skillMcpManager = SkillMcpManager.getInstance();
   const skillTools = createSkillTools(skillMcpManager, ctx);
 
-  // Initialize TmuxSessionManager to handle OpenCode's built-in Task tool sessions
-  const tmuxProvider = createTmuxProvider();
-  const tmuxSessionManager = new MultiplexerManager(ctx, tmuxConfig, tmuxProvider);
+  // Initialize MultiplexerManager to handle OpenCode's built-in Task tool sessions
+  const multiplexerProvider = getMultiplexerProvider(multiplexerConfig);
+  const multiplexerManager = new MultiplexerManager(ctx, multiplexerConfig, multiplexerProvider);
 
   // Initialize auto-update checker hook
   const autoUpdateChecker = createAutoUpdateCheckerHook(ctx, {
@@ -155,8 +159,8 @@ export const createPlugin = (
       // Handle auto-update checking
       await autoUpdateChecker.event(input);
 
-      // Handle tmux pane spawning for OpenCode's Task tool sessions
-      await tmuxSessionManager.onSessionCreated(input.event as {
+      // Handle multiplexer pane spawning for OpenCode's Task tool sessions
+      await multiplexerManager.onSessionCreated(input.event as {
         type: string;
         properties?: { info?: { id?: string; parentID?: string; title?: string } };
       });
