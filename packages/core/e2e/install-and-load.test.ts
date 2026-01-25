@@ -52,6 +52,8 @@ describe("E2E: install and load", () => {
       tui: false,
       antigravity: "no",
       openai: "no",
+      zai: "no",
+      copilot: "no",
       tmux: "no",
     });
 
@@ -117,7 +119,7 @@ describe("E2E: install and load", () => {
       "run",
       "who are you?",
       "--agent",
-      "scribe",
+      "orchestrator",
       "--log-level",
       "DEBUG",
     ], {
@@ -141,7 +143,7 @@ describe("E2E: install and load", () => {
       }
     } else {
       try {
-        expect(stdout.toLowerCase()).toMatch(/scribe|documentation/i);
+        expect(stdout.toLowerCase()).toMatch(/orchestrator|ai coding/i);
       } catch (e) {
         console.log("Stdout:", stdout);
         console.error("Stderr:", stderr);
