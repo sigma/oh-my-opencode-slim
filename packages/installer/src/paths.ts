@@ -29,7 +29,7 @@ export function getConfigJsonc(): string {
 }
 
 export function getLiteConfig(packageName: string): string {
-  const sanitized = packageName.replace(/^@/, "").replace("/", "-")
+  const sanitized = packageName.replace(/^@/, "").replace(/\//g, "-")
   return join(getConfigDir(), `${sanitized}.json`)
 }
 
