@@ -110,8 +110,9 @@ async function formatMcpCapabilities(
 
 export function createSkillTools(
   manager: SkillMcpManager,
-  pluginConfig?: PluginConfig
+  ctx?: any
 ): { omos_skill: ToolDefinition; omos_skill_mcp: ToolDefinition } {
+  const pluginConfig = ctx?.config ?? ctx;
   const allSkills = getBuiltinSkills();
   const description =
     SKILL_TOOL_DESCRIPTION + (allSkills.length > 0 ? formatSkillsXml(allSkills) : "");
@@ -124,7 +125,11 @@ export function createSkillTools(
     async execute(args: SkillArgs, toolContext) {
       const tctx = toolContext as ToolContext | undefined;
       const sessionId = tctx?.sessionID ? String(tctx.sessionID) : "unknown";
-      const agentName = tctx?.agent ?? "orchestrator";
+      const agentName = tctx?.agent ?? ctx?.config?.default_agent;
+
+      if (!agentName) {
+        throw new Error("No agent context available and no default agent configured.");
+      }
 
       const skillDefinition = getSkillByName(args.name);
       if (!skillDefinition) {
@@ -176,7 +181,11 @@ export function createSkillTools(
     async execute(args: SkillMcpArgs, toolContext) {
       const tctx = toolContext as ToolContext | undefined;
       const sessionId = tctx?.sessionID ? String(tctx.sessionID) : "unknown";
-      const agentName = tctx?.agent ?? "orchestrator";
+      const agentName = tctx?.agent ?? ctx?.config?.default_agent;
+
+      if (!agentName) {
+        throw new Error("No agent context available and no default agent configured.");
+      }
 
       const skillDefinition = getSkillByName(args.skillName);
       if (!skillDefinition) {

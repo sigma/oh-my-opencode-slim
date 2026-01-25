@@ -8,10 +8,7 @@
 // Agent types (single source of truth for agent names)
 export {
   ALL_AGENT_NAMES,
-  ORCHESTRATOR_NAME,
-  SUBAGENT_NAMES,
   isAgentName,
-  isSubagentName,
   type AgentName,
 } from "./agents";
 

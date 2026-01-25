@@ -8,7 +8,7 @@ const AGENT_ALIASES: Record<string, string> = {
 };
 
 /** Default skills per agent - "*" means all skills */
-export const DEFAULT_AGENT_SKILLS: Record<AgentName, string[]> = {
+export const DEFAULT_AGENT_SKILLS: Record<string, string[]> = {
   orchestrator: ["*"],
   designer: ["playwright"],
   oracle: [],

@@ -7,7 +7,7 @@
  */
 
 import type { AgentConfig } from "@opencode-ai/sdk";
-import { ALL_AGENT_NAMES, SUBAGENT_NAMES, type AgentName } from "@firefly-swarm/shared";
+import { ALL_AGENT_NAMES, type AgentName } from "@firefly-swarm/shared";
 import { parseRoleFile, type AgentFrontMatter, type ParsedRole } from "./frontmatter";
 import { renderTemplate, generateAgentsSectionWithOracleNote } from "./template";
 
@@ -101,12 +101,12 @@ export function getAgentPrompt(name: string): string {
 }
 
 /**
- * Get all subagent metadata (excludes orchestrator).
+ * Get all subagent metadata.
  *
  * @returns Array of subagent metadata
  */
 export function getSubagentMetadata(): AgentFrontMatter[] {
-  return SUBAGENT_NAMES.map((name) => getAgentMetadata(name));
+  return ALL_AGENT_NAMES.map((name: AgentName) => getAgentMetadata(name));
 }
 
 /**
@@ -114,7 +114,7 @@ export function getSubagentMetadata(): AgentFrontMatter[] {
  *
  * This is the generic factory function that creates an AgentDefinition
  * from the role file's front matter and content. For most agents, this
- * is all that's needed. The orchestrator has special handling for
+ * is all that's needed. The primary agent has special handling for
  * template variables.
  *
  * @param name - Agent name
@@ -125,8 +125,8 @@ export function createAgent(name: string, model: string): AgentDefinition {
   const metadata = getAgentMetadata(name);
   let prompt = getAgentPrompt(name);
 
-  // Special handling for orchestrator: render {{AGENTS}} template
-  if (name === "orchestrator") {
+  // Special handling for primary agent: render {{AGENTS}} template
+  if (metadata.primary) {
     prompt = renderTemplate(prompt, {
       AGENTS: generateAgentsSectionWithOracleNote(getSubagentMetadata()),
     });
@@ -176,5 +176,5 @@ export const DEFAULT_MODELS: Record<AgentName, string> = Object.fromEntries(
   ALL_AGENT_NAMES.map((name) => [name, getAgentMetadata(name).defaultModel])
 ) as Record<AgentName, string>;
 
-export { ALL_AGENT_NAMES, SUBAGENT_NAMES };
+export { ALL_AGENT_NAMES };
 export { type AgentFrontMatter } from "./frontmatter";

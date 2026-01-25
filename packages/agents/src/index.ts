@@ -5,7 +5,6 @@ import {
   type AgentDefinition,
   AGENT_REGISTRY,
   ALL_AGENT_NAMES,
-  SUBAGENT_NAMES,
   DEFAULT_MODELS,
 } from "./registry";
 
@@ -16,7 +15,6 @@ export { DEFAULT_MODELS };
 export {
   AGENT_REGISTRY,
   ALL_AGENT_NAMES,
-  SUBAGENT_NAMES,
   createAgent,
   getAgentMetadata,
   getAgentPrompt,
@@ -70,20 +68,20 @@ function applyDefaultPermissions(agent: AgentDefinition): void {
 
 // Agent Classification
 
-export type SubagentName = (typeof SUBAGENT_NAMES)[number];
+export type SubagentName = (typeof ALL_AGENT_NAMES)[number];
 
 export function isSubagent(name: string): name is SubagentName {
-  return (SUBAGENT_NAMES as readonly string[]).includes(name);
+  return (ALL_AGENT_NAMES as readonly string[]).includes(name);
 }
 
 // Public API
 
 /**
  * Create all agent definitions with optional configuration overrides.
- * Instantiates the orchestrator and all subagents, applying user config and defaults.
+ * Instantiates the primary agent and all subagents, applying user config and defaults.
  *
  * @param config - Optional plugin configuration with agent overrides
- * @returns Array of agent definitions (orchestrator first, then subagents)
+ * @returns Array of agent definitions
  */
 export function createAgents(config?: PluginConfig): AgentDefinition[] {
   const agentOverrides = config?.agents ?? {};
@@ -92,13 +90,15 @@ export function createAgents(config?: PluginConfig): AgentDefinition[] {
   // existing users who don't have fixer in their config yet
   const getModelForAgent = (name: string): string => {
     if (name === "fixer" && !getOverride(agentOverrides, "fixer")?.model) {
-      return getOverride(agentOverrides, "librarian")?.model ?? DEFAULT_MODELS["librarian"];
+      return getOverride(agentOverrides, "librarian")?.model ?? (DEFAULT_MODELS as any)["librarian"];
     }
-    return AGENT_REGISTRY[name]?.defaultModel ?? DEFAULT_MODELS[name as keyof typeof DEFAULT_MODELS];
+    return AGENT_REGISTRY[name]?.defaultModel ?? (DEFAULT_MODELS as any)[name];
   };
 
-  // Create all agents using the generic factory
-  const agents = ALL_AGENT_NAMES.map((name) => {
+  // Create all agents. We include "orchestrator" as the default primary agent.
+  // In a network-based setup, the primary agent is defined in the network.
+  const allNames = ["orchestrator", ...ALL_AGENT_NAMES];
+  const agents = allNames.map((name) => {
     const agent = createAgent(name, getModelForAgent(name));
 
     // Apply user overrides

@@ -48,6 +48,15 @@ export const createPlugin = (
     agents = getAgentConfigs(config);
   }
 
+  // Set default agent in config for tools and hooks
+  const primaryAgentEntry = Object.entries(agents || {}).find(
+    ([_, agent]) => agent.mode === "primary"
+  );
+  if (primaryAgentEntry) {
+    (config as any).default_agent = primaryAgentEntry[0];
+  }
+  (ctx as any).config = config;
+
   // Parse tmux config with defaults
   const tmuxConfig: TmuxConfig = {
     enabled: config.tmux?.enabled ?? false,
@@ -83,7 +92,7 @@ export const createPlugin = (
 
   const mcps = getMcpServers(config.disabled_mcps);
   const skillMcpManager = SkillMcpManager.getInstance();
-  const skillTools = createSkillTools(skillMcpManager, config);
+  const skillTools = createSkillTools(skillMcpManager, ctx);
 
   // Initialize TmuxSessionManager to handle OpenCode's built-in Task tool sessions
   const tmuxProvider = createTmuxProvider();
@@ -96,7 +105,7 @@ export const createPlugin = (
   });
 
   // Initialize phase reminder hook for workflow compliance
-  const phaseReminderHook = createPhaseReminderHook();
+  const phaseReminderHook = createPhaseReminderHook(ctx);
 
   // Initialize post-read nudge hook
   const postReadNudgeHook = createPostReadNudgeHook();
@@ -121,7 +130,13 @@ export const createPlugin = (
     mcp: mcps,
 
     config: async (opencodeConfig: Record<string, unknown>) => {
-      (opencodeConfig as { default_agent?: string }).default_agent = "orchestrator";
+      // Find the primary agent and set it as the default
+      const primaryAgent = Object.entries(agents || {}).find(
+        ([_, agent]) => agent.mode === "primary"
+      );
+      if (primaryAgent) {
+        (opencodeConfig as { default_agent?: string }).default_agent = primaryAgent[0];
+      }
 
       const configAgent = opencodeConfig.agent as Record<string, unknown> | undefined;
       if (!configAgent) {

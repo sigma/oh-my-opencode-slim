@@ -14,7 +14,7 @@ export { createPostReadNudgeHook } from "./post-read-nudge"
 export function createHooks(ctx: PluginInput) {
   return {
     ...createAutoUpdateCheckerHook(ctx),
-    ...createPhaseReminderHook(),
+    ...createPhaseReminderHook(ctx),
     ...createPostReadNudgeHook(),
   }
 }

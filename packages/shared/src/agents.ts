@@ -13,10 +13,9 @@
 
 /**
  * All agent names as a readonly tuple.
- * Order: orchestrator first (primary), then subagents alphabetically.
+ * Order: subagents alphabetically.
  */
 export const ALL_AGENT_NAMES = [
-  "orchestrator",
   "analyst",
   "archivist",
   "designer",
@@ -34,27 +33,8 @@ export const ALL_AGENT_NAMES = [
 export type AgentName = (typeof ALL_AGENT_NAMES)[number];
 
 /**
- * Orchestrator agent name constant.
- */
-export const ORCHESTRATOR_NAME = "orchestrator" as const;
-
-/**
- * Subagent names (all agents except orchestrator).
- */
-export const SUBAGENT_NAMES = ALL_AGENT_NAMES.filter(
-  (name): name is Exclude<AgentName, "orchestrator"> => name !== ORCHESTRATOR_NAME
-);
-
-/**
  * Type guard to check if a string is a valid agent name.
  */
 export function isAgentName(name: string): name is AgentName {
   return (ALL_AGENT_NAMES as readonly string[]).includes(name);
-}
-
-/**
- * Type guard to check if a string is a subagent name.
- */
-export function isSubagentName(name: string): name is Exclude<AgentName, "orchestrator"> {
-  return isAgentName(name) && name !== ORCHESTRATOR_NAME;
 }

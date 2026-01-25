@@ -6,7 +6,7 @@ import { tool, type PluginInput, type ToolDefinition } from "@opencode-ai/plugin
 import type { BackgroundTaskManager } from "./manager";
 import {
   log,
-  SUBAGENT_NAMES,
+  ALL_AGENT_NAMES,
   POLL_INTERVAL_MS,
   MAX_POLL_TIME_MS,
   DEFAULT_TIMEOUT_MS,
@@ -43,7 +43,7 @@ export function createBackgroundTools(
   tmuxConfig?: TmuxConfig,
   pluginConfig?: PluginConfig
 ): Record<string, ToolDefinition> {
-  const agentNames = SUBAGENT_NAMES.join(", ");
+  const agentNames = ALL_AGENT_NAMES.join(", ");
 
   const background_task = tool({
     description: `Run agent task. Use sync=true to wait for result, sync=false (default) to run in background.
