@@ -16,7 +16,7 @@ import type { Plugin } from "@opencode-ai/plugin";
 /**
  * Path to the network definition directory.
  */
-export const NETWORK_DIR = join(import.meta.dir, "network");
+const NETWORK_DIR = join(import.meta.dir, "network");
 
 // Re-export types for convenience
 export type { CompileResult, CompiledNetwork } from "@firefly-swarm/network-compiler";

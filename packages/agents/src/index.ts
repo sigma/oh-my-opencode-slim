@@ -107,8 +107,8 @@ export function createAgents(config?: PluginConfig): AgentDefinition[] {
       applyOverrides(agent, override);
     }
 
-    // Apply default permissions to orchestrator
-    if (name === "orchestrator") {
+    // Apply default permissions to primary agents
+    if (agent.config.mode === "primary") {
       applyDefaultPermissions(agent);
     }
 
@@ -130,13 +130,6 @@ export function getAgentConfigs(config?: PluginConfig): Record<string, SDKAgentC
   return Object.fromEntries(
     agents.map((a) => {
       const sdkConfig: SDKAgentConfig = { ...a.config, description: a.description };
-
-      // Apply classification-based visibility and mode
-      if (isSubagent(a.name)) {
-        sdkConfig.mode = "subagent";
-      } else if (a.name === "orchestrator") {
-        sdkConfig.mode = "primary";
-      }
 
       return [a.name, sdkConfig];
     })

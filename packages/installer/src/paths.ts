@@ -1,6 +1,6 @@
-import { existsSync, mkdirSync } from "node:fs"
+import { existsSync, mkdirSync, readFileSync } from "node:fs"
 import { homedir } from "node:os"
-import { join } from "node:path"
+import { join, isAbsolute } from "node:path"
 
 export function getConfigDir(): string {
   // Keep this aligned with OpenCode itself and the plugin config loader:
@@ -29,7 +29,19 @@ export function getConfigJsonc(): string {
 }
 
 export function getLiteConfig(packageName: string): string {
-  const sanitized = packageName.replace(/^@/, "").replace(/\//g, "-")
+  let name = packageName
+  if (isAbsolute(packageName)) {
+    try {
+      const pkgPath = join(packageName, "package.json")
+      if (existsSync(pkgPath)) {
+        const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"))
+        if (pkg.name) name = pkg.name
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+  const sanitized = name.replace(/^@/, "").replace(/\//g, "-")
   return join(getConfigDir(), `${sanitized}.json`)
 }
 

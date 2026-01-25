@@ -15,6 +15,7 @@ export interface AgentFrontMatter {
   delegationHints: string[];
   defaultModel: string;
   defaultTemperature: number;
+  primary?: boolean;
 }
 
 export interface ParsedRole {
@@ -140,6 +141,7 @@ function validateFrontMatter(data: Record<string, unknown>): AgentFrontMatter {
     delegationHints: asStringArray(data.delegationHints),
     defaultModel: String(data.defaultModel),
     defaultTemperature: Number(data.defaultTemperature),
+    primary: data.primary === true || data.primary === "true",
   };
 }
 

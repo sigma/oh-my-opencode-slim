@@ -14,6 +14,7 @@ triggers:
 delegationHints:
 defaultModel: google/claude-opus-4-5-thinking
 defaultTemperature: 0.1
+primary: true
 ---
 
 <Role>

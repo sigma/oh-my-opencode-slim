@@ -139,6 +139,7 @@ export function createAgent(name: string, model: string): AgentDefinition {
       model,
       temperature: metadata.defaultTemperature,
       prompt,
+      mode: metadata.primary ? "primary" : "subagent",
     },
   };
 }

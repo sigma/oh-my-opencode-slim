@@ -96,7 +96,7 @@ export function loadPluginConfig(directory: string, filename: string = CONFIG_FI
   const userConfigPath = path.join(
     getUserConfigDir(),
     "opencode",
-    CONFIG_FILENAME
+    filename
   );
 
   const projectConfigPath = path.join(directory, ".opencode", filename);

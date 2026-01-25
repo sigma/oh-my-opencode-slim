@@ -58,8 +58,7 @@ describe("E2E: install and load", () => {
     expect(exitCode).toBe(0);
 
     // Verify sanitized config file exists
-    const sanitizedName = pluginPath.replace(/^@/, "").replace(/\//g, "-");
-    const liteConfigPath = path.join(opencodeDir, `${sanitizedName}.json`);
+    const liteConfigPath = path.join(opencodeDir, `firefly-swarm-default-network.json`);
     expect(fs.existsSync(liteConfigPath)).toBe(true);
 
     // 2. Load
@@ -119,6 +118,8 @@ describe("E2E: install and load", () => {
       "who are you?",
       "--agent",
       "scribe",
+      "--log-level",
+      "DEBUG",
     ], {
       env: {
         ...process.env,
@@ -130,22 +131,22 @@ describe("E2E: install and load", () => {
     const stderr = pingResult.stderr.toString();
     
     if (pingResult.exitCode !== 0) {
-      if (
-        stderr.includes("not found") || 
-        stderr.includes("ENOENT") || 
-        stderr.includes("BunInstallFailedError") ||
-        stderr.includes("fn3 is not a function")
-      ) {
-        console.warn("opencode binary or plugin not found/accessible, skipping live check");
+      // @ts-ignore
+      if (pingResult.error?.code === "ENOENT") {
+        console.warn("opencode binary not found, skipping live check");
       } else {
-        console.error("opencode run failed with exit code:", pingResult.exitCode);
-        console.error("stdout:", stdout);
+        console.log("stdout:", stdout);
         console.error("stderr:", stderr);
         expect(pingResult.exitCode).toBe(0);
       }
     } else {
-      expect(pingResult.exitCode).toBe(0);
-      expect(stdout.toLowerCase()).toMatch(/scribe|documentation/i);
+      try {
+        expect(stdout.toLowerCase()).toMatch(/scribe|documentation/i);
+      } catch (e) {
+        console.log("Stdout:", stdout);
+        console.error("Stderr:", stderr);
+        throw e;
+      }
     }
   }, 120000);
 });

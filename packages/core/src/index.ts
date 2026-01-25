@@ -18,7 +18,7 @@ import {
   createPhaseReminderHook, 
   createPostReadNudgeHook 
 } from "@firefly-swarm/hooks";
-import { log, type TmuxConfig } from "@firefly-swarm/shared";
+import { log, type TmuxConfig, type PluginConfig } from "@firefly-swarm/shared";
 import { loadAndCompileNetwork } from "@firefly-swarm/network-compiler";
 import { loadPluginConfig } from "./loader";
 
@@ -28,7 +28,25 @@ export const createPlugin = (
   pluginName: string = "@firefly-swarm/core"
 ): Plugin => async (ctx: PluginInput) => {
   const config = loadPluginConfig(ctx.directory, configFilename);
-  const agents = customAgents || getAgentConfigs(config);
+  let agents = customAgents;
+
+  if (agents) {
+    // Apply overrides from config
+    const overrides = config.agents || {};
+    for (const [name, agent] of Object.entries(agents)) {
+      const override = (overrides as any)[name];
+      if (override) {
+        if (override.model) agent.model = override.model;
+        if (override.temperature !== undefined) agent.temperature = override.temperature;
+      }
+      // Ensure primary agent has permission to ask questions (default behavior)
+      if (agent.mode === "primary") {
+        agent.permission = { ...agent.permission, question: "allow" };
+      }
+    }
+  } else {
+    agents = getAgentConfigs(config);
+  }
 
   // Parse tmux config with defaults
   const tmuxConfig: TmuxConfig = {
@@ -205,6 +223,7 @@ export const createNetworkPlugin = (
   };
 };
 
-export type { PluginConfig, AgentOverrideConfig, AgentName, McpName, TmuxConfig, TmuxLayout } from "@firefly-swarm/shared";
+export type { AgentOverrideConfig, AgentName, McpName, TmuxConfig, TmuxLayout } from "@firefly-swarm/shared";
+export type { PluginConfig } from "@firefly-swarm/shared";
 export type { RemoteMcpConfig } from "@firefly-swarm/mcp-integrations";
 export { loadPluginConfig } from "./loader";

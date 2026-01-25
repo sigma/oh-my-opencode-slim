@@ -4,7 +4,7 @@
   "description": "Standard agent network for OpenCode Swarm - a curated set of AI coding agents",
   "type": "module",
   "license": "MIT",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "exports": {
     ".": {
       "bun": "./index.ts",
@@ -19,7 +19,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "bun build index.ts --outdir dist --target bun --format esm && tsc --emitDeclarationOnly",
+    "build": "bun build index.ts --outdir dist --target bun --format esm && cp -r network dist/ && tsc --emitDeclarationOnly",
     "typecheck": "tsc --noEmit",
     "validate": "bun run index.ts"
   },
