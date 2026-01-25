@@ -10,7 +10,7 @@ import {
   POLL_INTERVAL_BACKGROUND_MS, 
   POLL_INTERVAL_SLOW_MS,
   type PluginConfig,
-  type TmuxConfig,
+  type MultiplexerConfig,
 } from "@firefly-swarm/shared";
 import { applyAgentVariant, resolveAgentVariant } from "./utils";
 
@@ -62,13 +62,13 @@ export class BackgroundTaskManager {
   private client: OpencodeClient;
   private directory: string;
   private pollInterval?: ReturnType<typeof setInterval>;
-  private tmuxEnabled: boolean;
+  private multiplexerEnabled: boolean;
   private config?: PluginConfig;
 
-  constructor(ctx: PluginInput, tmuxConfig?: TmuxConfig, config?: PluginConfig) {
+  constructor(ctx: PluginInput, multiplexerConfig?: MultiplexerConfig, config?: PluginConfig) {
     this.client = ctx.client;
     this.directory = ctx.directory;
-    this.tmuxEnabled = tmuxConfig?.enabled ?? false;
+    this.multiplexerEnabled = multiplexerConfig?.enabled ?? false;
     this.config = config;
   }
 
@@ -100,8 +100,8 @@ export class BackgroundTaskManager {
     this.tasks.set(task.id, task);
     this.startPolling();
 
-    // Give TmuxSessionManager time to spawn the pane via event hook
-    if (this.tmuxEnabled) {
+    // Give MultiplexerManager time to spawn the pane via event hook
+    if (this.multiplexerEnabled) {
       await new Promise((r) => setTimeout(r, 500));
     }
 

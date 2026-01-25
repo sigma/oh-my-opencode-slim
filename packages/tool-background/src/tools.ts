@@ -11,7 +11,7 @@ import {
   MAX_POLL_TIME_MS,
   DEFAULT_TIMEOUT_MS,
   STABLE_POLLS_THRESHOLD,
-  type TmuxConfig,
+  type MultiplexerConfig,
   type PluginConfig,
 } from "@firefly-swarm/shared";
 import { applyAgentVariant, resolveAgentVariant } from "./utils";
@@ -40,7 +40,7 @@ interface SessionStatus {
 export function createBackgroundTools(
   ctx: PluginInput,
   manager: BackgroundTaskManager,
-  tmuxConfig?: TmuxConfig,
+  multiplexerConfig?: MultiplexerConfig,
   pluginConfig?: PluginConfig
 ): Record<string, ToolDefinition> {
   const agentNames = ALL_AGENT_NAMES.join(", ");
@@ -75,7 +75,7 @@ Sync mode blocks until completion and returns the result directly.`,
           agent,
           toolContext as ToolContext,
           ctx,
-          tmuxConfig,
+          multiplexerConfig,
           pluginConfig,
           args.session_id as string | undefined
         );
@@ -173,7 +173,7 @@ async function executeSync(
   agent: string,
   toolContext: ToolContext,
   ctx: PluginInput,
-  tmuxConfig?: TmuxConfig,
+  multiplexerConfig?: MultiplexerConfig,
   pluginConfig?: PluginConfig,
   existingSessionId?: string
 ): Promise<string> {
@@ -182,7 +182,7 @@ async function executeSync(
     toolContext,
     description,
     agent,
-    tmuxConfig,
+    multiplexerConfig,
     existingSessionId
   );
 
@@ -229,7 +229,7 @@ export async function resolveSessionId(
   toolContext: ToolContext,
   description: string,
   agent: string,
-  tmuxConfig?: TmuxConfig,
+  multiplexerConfig?: MultiplexerConfig,
   existingSessionId?: string
 ): Promise<{ sessionID: string; error?: string }> {
   if (existingSessionId) {
@@ -239,7 +239,7 @@ export async function resolveSessionId(
     }
     return { sessionID: existingSessionId };
   }
-  return createSession(ctx, toolContext, description, agent, tmuxConfig);
+  return createSession(ctx, toolContext, description, agent, multiplexerConfig);
 }
 
 export async function createSession(
@@ -247,7 +247,7 @@ export async function createSession(
   toolContext: ToolContext,
   description: string,
   agent: string,
-  tmuxConfig?: TmuxConfig
+  multiplexerConfig?: MultiplexerConfig
 ): Promise<{ sessionID: string; error?: string }> {
   const parentSession = await ctx.client.session.get({ path: { id: toolContext.sessionID } }).catch(() => null);
   const parentDirectory = parentSession?.data?.directory ?? ctx.directory;
@@ -264,7 +264,7 @@ export async function createSession(
     return { sessionID: "", error: `Failed to create session: ${createResult.error}` };
   }
 
-  if (tmuxConfig?.enabled) {
+  if (multiplexerConfig?.enabled) {
     await new Promise((r) => setTimeout(r, 500));
   }
 
