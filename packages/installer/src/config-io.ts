@@ -272,7 +272,7 @@ export function detectCurrentConfig(): DetectedConfig {
         .filter(Boolean)
       result.hasOpenAI = models.some((m) => m?.startsWith("openai/"))
       result.hasZai = models.some((m) => m?.startsWith("zai-coding-plan/"))
-      result.hasCopilot = models.some((m) => m?.startsWith("github/"))
+      result.hasCopilot = models.some((m) => m?.startsWith("github-copilot/"))
       result.hasOpencodeZen = models.some((m) => m?.startsWith("opencode/"))
     }
 

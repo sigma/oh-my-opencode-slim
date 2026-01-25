@@ -31,7 +31,7 @@ models:
   - google/gemini-2.0-flash
   - openai/gpt-4o-mini
   - zai-coding-plan/glm-4.7-flash
-  - github/gpt-4o-mini
+  - github-copilot/gpt-5.1-codex-mini
   - opencode/big-pickle
 defaultTemperature: 0.3
 ---

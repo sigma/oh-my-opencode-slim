@@ -19,7 +19,7 @@ models:
   - google/claude-opus-4-5-thinking
   - openai/gpt-5.2-codex
   - zai-coding-plan/glm-4.7
-  - github/gpt-4o
+  - github-copilot/gpt-5.2-codex
   - opencode/big-pickle
 defaultTemperature: 0.1
 ---

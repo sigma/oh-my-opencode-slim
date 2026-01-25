@@ -45,7 +45,7 @@ export function generateLiteConfig(installConfig: InstallConfig): Record<string,
     { id: "antigravity", prefixes: ["google/", "anthropic/", "mistral/"] },
     { id: "openai", prefixes: ["openai/"] },
     { id: "zai", prefixes: ["zai-coding-plan/"] },
-    { id: "copilot", prefixes: ["github/"] },
+    { id: "copilot", prefixes: ["github-copilot/"] },
     { id: "zen", prefixes: ["opencode/"] },
   ]
 
